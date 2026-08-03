@@ -1,0 +1,27 @@
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid #333;
+    background-color: #cdeece;
+    text-align: center;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+h1{
+    text-align: center;
+    color: #cdeece;
+}
+body{
+    background-origin: border-box;
+    background-color: rgb(65, 90, 112);
+}
+
+
