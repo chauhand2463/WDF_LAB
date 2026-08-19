@@ -2,14 +2,27 @@
 <html>
 <head>
   <title>StudentHub</title>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
-<h1>StudentHub Portal</h1>
-<hr>
-<a href="login.html">Login</a>
-<br><br>
-<a href="Register.html">Register</a>
+<div class="nav">
+  <a href="index.html">Home</a>
+  <a href="login.html">Login</a>
+  <a href="Register.html">Register</a>
+  <a href="about.html">About</a>
+</div>
+
+<div class="container">
+  <h1><u>StudentHub Portal</u></h1>
+  <hr>
+  <p>Welcome to StudentHub. Login to access your student dashboard, or register if you are new.</p>
+  <br>
+  <p>
+    <input type="button" value="Login" onclick="window.location.href='login.html'">
+    <input type="button" value="Register" onclick="window.location.href='Register.html'">
+  </p>
+</div>
 
 </body>
 </html>

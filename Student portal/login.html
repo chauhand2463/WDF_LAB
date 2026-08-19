@@ -2,25 +2,34 @@
 <html>
 <head>
   <title>StudentHub - Login</title>
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
 
-<div style = " color: rgb(17, 97, 50)">
+<div class="container">
   <h1><u>Student Login</u></h1>
   <hr>
-  <form id="loginForm">
+  <form id="loginForm" novalidate onsubmit="return validateLogin()">
     <table>
       <tr>
         <td><b>Student ID:</b></td>
-        <td><input type="text" id="studentId" size="25" ></td>
+        <td>
+          <input type="text" id="loginId" size="25" placeholder="e.g. 25CE015">
+        </td>
       </tr>
       <tr>
         <td><b>Password :</b></td>
-        <td><input type="password" id="password" size="25" ></td>
+        <td>
+          <input type="password" id="loginPassword" size="25" placeholder="Enter password">
+        </td>
       </tr>
       <tr>
         <td></td>
         <td><input type="submit" value="Login"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><span class="error" id="loginError"></span></td>
       </tr>
       <tr>
         <td></td>
@@ -31,6 +40,7 @@
   <br>
   <p>Don't have an account? <a href="Register.html">Register here</a>.</p>
 </div>
+
 <script src="auth.js"></script>
 </body>
 </html>

@@ -2,34 +2,60 @@
 <html>
 <head>
   <title>StudentHub - Forgot Password</title>
+  <link rel="stylesheet" href="forgot.css">
 </head>
 <body>
 
-<h1>Forgot Password</h1>
-<hr>
-<p>Enter your Student ID and registered email to reset your password.</p>
-<br>
-<form>
-  <b>Student ID :</b>
+<div class="container">
+  <h1>Forgot Password</h1>
+  <hr>
+  <p>Enter your Student ID and registered email to reset your password.</p>
   <br>
-  <input type="text" size="25" required>
-  <br><br>
-  <b>Email :</b>
-  <br>
-  <input type="email" size="25" required>
-  <br><br>
-  <b>New Password :</b>
-  <br>
-  <input type="password" size="25" required>
-  <br><br>
-  <b>Confirm Password :</b>
-  <br>
-  <input type="password" size="25" required>
-  <br><br>
-  <input type="submit" value="Reset Password"> <input type="reset" value="Clear">
-  <br><br>
-  <a href="login.html">Back to Login</a>
-</form>
+  <form id="forgotForm" novalidate onsubmit="return validateForgot()">
+    <table>
+      <tr>
+        <td><b>Student ID :</b></td>
+        <td>
+          <input type="text" id="fId" size="25" placeholder="e.g. 25CE015">
+        </td>
+      </tr>
+      <tr>
+        <td><b>Email :</b></td>
+        <td>
+          <input type="email" id="fEmail" size="25" placeholder="you@example.com">
+        </td>
+      </tr>
+      <tr>
+        <td><b>New Password :</b></td>
+        <td>
+          <input type="password" id="fPassword" size="25" placeholder="8 to 20 characters">
+        </td>
+      </tr>
+      <tr>
+        <td><b>Confirm Password :</b></td>
+        <td>
+          <input type="password" id="fConfirm" size="25" placeholder="Re-enter password">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="submit" value="Reset Password">
+          <input type="reset" value="Clear">
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><span class="error" id="forgotError"></span></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><a href="login.html">Back to Login</a></td>
+      </tr>
+    </table>
+  </form>
+</div>
 
+<script src="auth.js"></script>
 </body>
 </html>
