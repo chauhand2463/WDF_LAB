@@ -443,7 +443,7 @@ The database-backed practicals (**8–14**) require PHP + MySQL (XAMPP/WAMP/LAMP
 | Role | Student ID | Password |
 |------|-----------|----------|
 | Admin | `ADMIN001` | `Admin@123` |
-| Student | `25DCE003` | `Student@123` |
+| Student | `25CE015` | `Student@123` |
 
 Static practicals (**1–7**) can be opened directly in a browser; practical 6's JSON
 fetch requires being served over HTTP (not `file://`).
