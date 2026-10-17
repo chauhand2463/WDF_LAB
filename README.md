@@ -426,17 +426,102 @@ record important admin actions in `audit_logs`.
 
 ## Running the project locally
 
-The database-backed practicals (**8–14**) require PHP + MySQL (XAMPP/WAMP/LAMP).
+`practical14/` is the **complete, final site** (each practical folder is a cumulative
+snapshot, so 14 contains everything). The database-backed practicals (**8–14**) need a
+PHP + MySQL stack; the static practicals (**1–7**) need only a browser (plus a PHP
+server for practical 7, and any HTTP server for practical 6's fetch).
 
-1. Start **Apache** and **MySQL**.
-2. Import the schema for the practical you want to run (creates the `studenthub`
-   database). Import, for example:
-   `practical14/database/studenthub.sql` via phpMyAdmin.
-3. Confirm the connection settings in that practical's `db.php`
-   (default: host `localhost`, database `studenthub`, user `root`, empty password).
-4. Open the login page, e.g.:
-   `http://localhost/WDF_LAB/practical14/pages/login.php`
-   (adjust the path to match your web root).
+### 1. Prerequisites
+
+| Stack | Best for | Includes |
+|-------|----------|----------|
+| **XAMPP** | Windows (recommended) | Apache, MySQL, phpMyAdmin |
+| **WAMP** | Windows | Apache, MySQL, phpMyAdmin |
+| **LAMP** | Linux | Apache, MySQL/MariaDB, PHP |
+
+Any recent **PHP 8.x** and **MySQL 8 / MariaDB 10.4+** also work if you prefer a
+manual setup (or `php -S localhost:8000` for a quick PHP-only server — MySQL is still
+required for practicals 8–14).
+
+### 2. Start Apache and MySQL
+
+- **XAMPP/WAMP:** open the control panel and start **Apache** and **MySQL**.
+- **Linux:** `sudo systemctl start apache2 mysql` (or `mariadb`).
+
+If port 80 is already in use, change Apache's port (e.g. to 8080) in the control
+panel / `httpd.conf` and adjust every `http://localhost/...` URL below accordingly.
+
+### 3. Copy the project into the web root
+
+The whole `WDF_LAB` folder goes inside the server's document root so every practical
+is reachable by URL:
+
+| Stack | Destination |
+|-------|-------------|
+| XAMPP | `C:\xampp\htdocs\WDF_LAB\` |
+| WAMP | `C:\wamp64\www\WDF_LAB\` |
+| LAMP | `/var/www/html/WDF_LAB/` |
+
+You can copy just this repository folder, or clone it directly:
+
+```
+cd C:\xampp\htdocs
+git clone https://github.com/chauhand2463/WDF_LAB.git
+```
+
+The folder name becomes the URL path — keep it as `WDF_LAB` to match the URLs in this
+README (or substitute your own folder name everywhere).
+
+### 4. Import the database
+
+Each database-backed practical ships its own dump at
+`practicalN/database/studenthub.sql`. One import is enough to start — the dumps share
+the same schema and demo users, and re-importing a dump is safe (it drops and recreates
+the tables).
+
+**Option A — phpMyAdmin (GUI):**
+
+1. Open `http://localhost/phpmyadmin`.
+2. **Import** tab → **Choose file** → select
+   `WDF_LAB/practical14/database/studenthub.sql`.
+3. Click **Go**. This creates the `studenthub` database, the tables
+   (`students`, `events`, `registrations`, `audit_logs`) and the seeded demo users.
+
+**Option B — MySQL command line:**
+
+```
+mysql -u root < practical14/database/studenthub.sql
+```
+
+### 5. Confirm the database connection settings
+
+`practicalN/db.php` holds the PDO credentials. The defaults match a stock XAMPP/WAMP
+install:
+
+| Constant | Default |
+|----------|---------|
+| Host | `localhost` |
+| Database | `studenthub` |
+| User | `root` |
+| Password | *(empty)* |
+
+If your MySQL root user has a password, or you renamed the database, edit that
+`db.php` (every practical 8–14 has its own copy).
+
+### 6. Open the complete site
+
+Visit the login page of the final practical:
+
+```
+http://localhost/WDF_LAB/practical14/pages/login.php
+```
+
+Log in with a demo account below, then use the role-based menu:
+
+- **Student:** profile, courses, attendance, assignment, events (register for events),
+  contact.
+- **Admin:** dashboard with stats, student CRUD, event CRUD with poster upload,
+  audit-log viewer (`pages/adminpages/`).
 
 ### Demo credentials (seeded by the SQL dump)
 
@@ -445,8 +530,31 @@ The database-backed practicals (**8–14**) require PHP + MySQL (XAMPP/WAMP/LAMP
 | Admin | `ADMIN001` | `Admin@123` |
 | Student | `25CE015` | `Student@123` |
 
-Static practicals (**1–7**) can be opened directly in a browser; practical 6's JSON
-fetch requires being served over HTTP (not `file://`).
+Student IDs follow the format `25CE015` (2 digits, 2–3 letters, 3 digits).
+
+### Running the other practicals
+
+- **Practicals 8–13:** same steps as above — import that practical's
+  `database/studenthub.sql`, then open e.g.
+  `http://localhost/WDF_LAB/practical13/pages/login.php`. (Practicals 8–9 seed a
+  different sample student, `25DCE001`.)
+- **Practical 7** (PHP + CSV/JSON storage): needs PHP, no MySQL —
+  `http://localhost/WDF_LAB/practical7/pages/register.php`.
+- **Practicals 1–6** (static): open the HTML files directly in a browser, e.g.
+  `Practical2/pages/index.html`. Practical 6 loads `student.json` with `fetch`, which
+  browsers block on `file://` — serve it over HTTP instead:
+  `http://localhost/WDF_LAB/Practical6/pages/...`
+
+### Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| `Database connection failed.` | MySQL isn't running, or `db.php` credentials / database name don't match. |
+| Blank page or PHP errors | Confirm Apache is running PHP 8.x (XAMPP: PHP version in the control panel). |
+| `404 Not Found` at the URLs above | Project isn't in the web root, or the folder name isn't `WDF_LAB`. |
+| Login rejected with correct credentials | The DB still has an old seed — re-import `studenthub.sql`. |
+| Event poster upload fails | Apache/PHP needs write access to `practical14/uploads/event_posters/` (created automatically on first upload). |
+| Logged out unexpectedly | Protected pages enforce a 15-minute inactivity timeout — log in again. |
 
 ---
 
