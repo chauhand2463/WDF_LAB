@@ -1,0 +1,29 @@
+[
+  {
+    "studentID": "25CE001",
+    "name": "Naruto Uzumaki",
+    "course": "Computer Engineering",
+    "semester": 3,
+    "email": "naruto@gmail.com",
+    "mobile": "9876543210",
+    "university": "CHARUSAT"
+  },
+  {
+    "studentID": "25CE002",
+    "name": "Sasuke Uchiha",
+    "course": "Computer Engineering",
+    "semester": 3,
+    "email": "sasuke@gmail.com",
+    "mobile": "9876543211",
+    "university": "CHARUSAT"
+  },
+  {
+    "studentID": "25CE003",
+    "name": "Monkey D. Luffy",
+    "course": "Computer Engineering",
+    "semester": 3,
+    "email": "luffy@gmail.com",
+    "mobile": "9909835906",
+    "university": "CHARUSAT"
+  }
+]
