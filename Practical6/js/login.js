@@ -47,13 +47,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const idCheck =
-            /^[0-9]{2}[A-Z]{3}[0-9]{3}$/;
+            /^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/;
 
 
         if (!idCheck.test(studentID)) {
 
             alert(
-                "Please enter a valid Student ID. Example: 24CE001"
+                "Please enter a valid Student ID. Example: 25CE001"
             );
 
             return;

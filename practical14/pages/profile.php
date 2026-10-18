@@ -1,9 +1,19 @@
 <?php
 require_once "session_check.php";
+require_once "db.php";
 
 if ($_SESSION["role"] !== "student") {
     http_response_code(403);
     exit("Unauthorized access.");
+}
+
+$student_id = $_SESSION["student_id"];
+$stmt = $conn->prepare("SELECT student_id, full_name, email, mobile, course FROM students WHERE student_id = ?");
+$stmt->execute([$student_id]);
+$student = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$student) {
+    exit("Student not found.");
 }
 ?>
 <!DOCTYPE html>
@@ -68,7 +78,6 @@ if ($_SESSION["role"] !== "student") {
                 </li>
 
                 
-
                 <li>
                     <a href="event_register.php">
                         Event Registration
@@ -80,8 +89,7 @@ if ($_SESSION["role"] !== "student") {
                         Dashboard
                     </a>
                 </li>
-              
-
+               
                 <li>
                     <a href="courses.php">
                         Courses
@@ -101,6 +109,7 @@ if ($_SESSION["role"] !== "student") {
 
             </ul>
 
+
         </nav>
 
 
@@ -108,7 +117,7 @@ if ($_SESSION["role"] !== "student") {
 
         <div class="logout-text">
 
-            <a href="login.php">
+            <a href="logout.php">
                 Logout
             </a>
 
@@ -116,7 +125,6 @@ if ($_SESSION["role"] !== "student") {
 
 
     </header>
-
 
 
     <!-- Profile Section -->
@@ -140,13 +148,13 @@ if ($_SESSION["role"] !== "student") {
 
             <p>
                 <strong>Name:</strong>
-                Chauhan Dhairy kaushikbhai
+                <?= htmlspecialchars($student['full_name']) ?>
             </p>
 
 
             <p>
                 <strong>Roll No:</strong>
-                25CE015
+                <?= htmlspecialchars($student['student_id']) ?>
             </p>
 
 
@@ -164,20 +172,19 @@ if ($_SESSION["role"] !== "student") {
 
             <p>
                 <strong>Email:</strong>
-                amrutiyaaniket@gmail.com
+                <?= htmlspecialchars($student['email']) ?>
             </p>
 
 
             <p>
                 <strong>Phone:</strong>
-                9876543210
+                <?= htmlspecialchars($student['mobile']) ?>
             </p>
 
 
         </div>
 
     </div>
-
 
 </body>
 

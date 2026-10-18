@@ -1,29 +1,92 @@
 [
     {
-        "studentID": "25DCE001",
-        "name": "Tarang",
+        "studentID": "25CE001",
+        "name": "Monkey D. Luffy",
         "course": "Computer Engineering",
         "semester": 3,
-        "email": "tarang@gmail.com",
+        "email": "luffy@onepiece.com",
         "mobile": "9876543210",
         "university": "CHARUSAT"
     },
     {
-        "studentID": "25DCE002",
-        "name": "Nehang",
+        "studentID": "25CE002",
+        "name": "Roronoa Zoro",
         "course": "Computer Engineering",
         "semester": 3,
-        "email": "nehang@gmail.com",
+        "email": "zoro@onepiece.com",
         "mobile": "9876543211",
         "university": "CHARUSAT"
     },
     {
-        "studentID": "25DCE003",
-        "name": "Chauhan Dhairy kaushikbhai",
+        "studentID": "25CE003",
+        "name": "Nami Catburglar",
         "course": "Computer Engineering",
         "semester": 3,
-        "email": "aniket@gmail.com",
+        "email": "nami@onepiece.com",
         "mobile": "9909835906",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE004",
+        "name": "Usopp Sniper",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "usopp@onepiece.com",
+        "mobile": "9876543213",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE005",
+        "name": "Sanji Vinsmoke",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "sanji@onepiece.com",
+        "mobile": "9876543214",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE006",
+        "name": "Tony Tony Chopper",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "chopper@onepiece.com",
+        "mobile": "9876543215",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE007",
+        "name": "Nico Robin",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "robin@onepiece.com",
+        "mobile": "9876543216",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE008",
+        "name": "Franky Cyborg",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "franky@onepiece.com",
+        "mobile": "9876543217",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE009",
+        "name": "Brook Soul",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "brook@onepiece.com",
+        "mobile": "9876543218",
+        "university": "CHARUSAT"
+    },
+    {
+        "studentID": "25CE010",
+        "name": "Jinbe Knight",
+        "course": "Computer Engineering",
+        "semester": 3,
+        "email": "jinbe@onepiece.com",
+        "mobile": "9876543219",
         "university": "CHARUSAT"
     }
 ]

@@ -24,7 +24,7 @@ fetch("../data/student.json")
 
         if (!loggedInID) {
 
-            loggedInID = "25DCE001";
+            loggedInID = "25CE001";
 
         }
 
