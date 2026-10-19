@@ -1,5 +1,5 @@
-
 <?php
+
 session_start();
 require_once "../db.php";
 require_once __DIR__ . "/../audit.php";
@@ -8,6 +8,7 @@ $isHttps = !empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off";
 $timeout = 15 * 60;
 $cookieName = "studenthub_remember";
 $message = "";
+$messageType = "error";
 
 function redirectByRole($role)
 {
@@ -112,8 +113,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($studentID === "") {
         $message = "Please enter your Student ID.";
+        $messageType = "error";
     } elseif ($studentpass === "") {
         $message = "Please enter your password.";
+        $messageType = "error";
     } else {
         try {
             $stmt = $conn->prepare(
@@ -133,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 !password_verify($studentpass, $student["password"])
             ) {
                 $message = "Invalid Student ID or password.";
+                $messageType = "error";
             } else {
                 session_regenerate_id(true);
 
@@ -184,6 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } catch (PDOException $e) {
             $message = "Database error. Please try again.";
+            $messageType = "error";
         }
     }
 }
@@ -197,112 +202,95 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <title>CHARUSAT | Student Login</title>
 
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-<header class="header">
+    <!-- Header -->
+    <header class="header reveal">
 
-    <div class="logo">
-        <img src="../images/charusat.png" alt="CHARUSAT Logo">
-    </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
-    <div class="page-title">
-        <h2>STUDENT LOGIN</h2>
-    </div>
+            <div class="logo reveal" style="animation-delay:0.1s">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+            </div>
 
-    <div class="logout-text">
-        <a href="login.php">Login</a>
-    </div>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="register.php">Create Account</a></li>
+                </ul>
+            </nav>
 
-</header>
-
-<main>
-
-    <div class="login-container">
-
-        <div class="login-heading">
-            <h1>Welcome Back</h1>
-            <p>Login to access your student portal</p>
         </div>
 
-        <?php if ($message !== ""): ?>
-            <p class="login-message">
-                <?= htmlspecialchars($message, ENT_QUOTES, "UTF-8") ?>
-            </p>
-        <?php endif; ?>
+    </header>
 
-        <form id="loginForm" method="POST" action="login.php">
+    <main>
 
-            <div class="input-group">
-                <label for="studentID">
-                    Student ID <span>*</span>
-                </label>
+        <div class="page-title-wrap reveal">
+            <h1>Welcome Back</h1>
+            <span class="tag">STUDENT LOGIN</span>
+        </div>
 
-                <input
-                    type="text"
-                    id="studentID"
-                    name="studentID"
-                    placeholder="Enter your student ID"
-                    autocomplete="username"
-                    required
-                >
-            </div>
+        <div class="page-intro reveal">Sign in to access your student portal.</div>
 
-            <div class="input-group">
-                <label for="studentpass">
-                    Password <span>*</span>
-                </label>
+        <div class="login-container box reveal" style="max-width:460px;margin:0 auto 44px auto;">
 
-                <input
-                    type="password"
-                    id="studentpass"
-                    name="studentpass"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
-            </div>
+            <?php if ($message !== ""): ?>
+                <p class="login-message login-message--<?= $messageType ?>">
+                    <?= htmlspecialchars($message, ENT_QUOTES, "UTF-8") ?>
+                </p>
+            <?php endif; ?>
 
-            <div class="login-options">
+            <form id="loginForm" method="POST" action="login.php">
 
-                <label class="remember">
-                    <input type="checkbox" name="remember">
-                    <span>Remember me</span>
-                </label>
+                <div class="form-group reveal">
+                    <label for="studentID">Student ID <span>*</span></label>
+                    <input
+                        type="text"
+                        id="studentID"
+                        name="studentID"
+                        placeholder="Example: 24CE001"
+                        autocomplete="username"
+                        required>
+                </div>
 
-                <a href="#">Forgot Password?</a>
+                <div class="form-group reveal">
+                    <label for="studentpass">Password <span>*</span></label>
+                    <input
+                        type="password"
+                        id="studentpass"
+                        name="studentpass"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required>
+                </div>
 
-            </div>
+                <div class="login-options reveal" style="display:flex;align-items:center;gap:10px;color:var(--text-muted);font-size:0.9rem;">
+                    <label class="remember" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" style="color:var(--accent);margin-left:auto;">Forgot Password?</a>
+                </div>
 
-            <div class="submit-section">
+                <div class="submit-section reveal" style="margin-top:8px;">
+                    <button type="submit" class="btn btn--accent">Login</button>
+                    <button type="button" class="btn btn--ghost" onclick="window.location.href='role.php'">Sign up</button>
+                </div>
 
-                <button type="submit" class="login-btn">
-                    Login
-                </button>
+            </form>
 
-                <button
-                    type="button"
-                    class="clear-btn"
-                    onclick="window.location.href='role.php'"
-                >
-                    Sign up
-                </button>
+        </div>
 
-            </div>
+    </main>
 
-        </form>
+    <footer>
+        <h1>© 2026 CHARUSAT University &nbsp;|&nbsp; Student Portal</h1>
+    </footer>
 
-    </div>
-
-</main>
-
-<footer>
-    <p>© 2026 CHARUSAT University | Student Portal</p>
-</footer>
-
-<script src="../js/login.js"></script>
+    <script src="../js/login.js"></script>
 
 </body>
 </html>

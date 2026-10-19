@@ -29,13 +29,15 @@ function build_dynamic_menu(string $role, string $base = ""): array
 
 function render_dynamic_menu(string $role, string $base = ""): string
 {
-    $html = "<ul>";
+    $html = "<ul class=\"nav-list\">";
 
     foreach (build_dynamic_menu($role, $base) as $item) {
         $href = htmlspecialchars($item["href"], ENT_QUOTES, "UTF-8");
         $label = htmlspecialchars($item["label"], ENT_QUOTES, "UTF-8");
+        $current = $item["label"] === "Dashboard" ? ' aria-current="page"' : "";
 
-        $html .= '<li><a href="' . $href . '">' . $label . "</a></li>";
+        $html .= "<li><a href=\"" . $href . "\"" . $current . ">" . $label .
+            "</a></li>";
     }
 
     $html .= "</ul>";

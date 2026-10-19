@@ -352,7 +352,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         type="text"
                         id="studentid"
                         name="studentid"
-                        placeholder="Example: 25DCE001"
+                        placeholder="Example: 25CE015"
                         maxlength="8"
                         required>
 

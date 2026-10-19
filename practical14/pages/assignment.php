@@ -12,242 +12,188 @@ if ($_SESSION["role"] !== "student") {
 <head>
 
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
     <link
         rel="stylesheet"
-        href="../css/assignment.css">
+        href="../css/style.css">
 
-    <title>Assignments</title>
+    <title>Assignments | Student HUB Portal</title>
 
 </head>
 
 
 <body>
 
-
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <!-- Logo -->
-
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <!-- Navigation -->
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-        <nav>
-
-            <ul>
-
-                <li>
-                    <a href="profile.php">
-                        Profile
-                    </a>
-                </li>
+            </div>
 
 
-                <li>
-                    <a href="attendance.php">
-                        Attendance
-                    </a>
-                </li>
+            <!-- Navigation -->
+
+            <nav id="navbar">
+                <?= render_dynamic_menu("student") ?>
+            </nav>
 
 
-                <li>
-                    <a href="assignment.php">
-                        Assignment
-                    </a>
-                </li>
+            <!-- Login -->
 
+            <div class="logout-text reveal" style="animation-delay:0.2s">
 
-               
+                <a href="logout.php">
+                    Logout
+                </a>
 
-                <li>
-                    <a href="event_register.php">
-                        Event Registration
-                    </a>
-                </li>
+            </div>
 
-
-                <li>
-                    <a href="index.php">
-                        Dashboard
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="courses.php">
-                        Courses
-                    </a>
-                </li>
-                <li>
-                    <a href="students.csv">
-                        Faculty
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="contact.php">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-
-
-        <!-- Login -->
-
-        <div class="logout-text">
-
-            <a href="login.php">
-                Login
-            </a>
 
         </div>
 
 
     </header>
 
-
-
     <!-- Assignment Section -->
 
-    <div class="assignment-card">
+    <main>
 
-        <h2>
-            Assignments
-        </h2>
+        <div class="page-title-wrap reveal">
+            <h1>Assignments</h1>
+            <span class="tag">COURSEWORK</span>
+        </div>
 
+        <div class="page-intro reveal">View your upcoming assignments, due dates, and submission status.</div>
 
-        <table>
+        <div class="assignment-card box reveal" style="max-width:900px;margin:0 auto 44px auto;">
 
-            <tr>
+            <h2>Assignments</h2>
 
-                <th>
-                    Subject
-                </th>
+            <table>
 
-                <th>
-                    Assignment
-                </th>
+                <tr>
 
-                <th>
-                    Due Date
-                </th>
+                    <th>
+                        Subject
+                    </th>
 
-                <th>
-                    Status
-                </th>
+                    <th>
+                        Assignment
+                    </th>
 
-            </tr>
+                    <th>
+                        Due Date
+                    </th>
 
+                    <th>
+                        Status
+                    </th>
 
-            <tr>
-
-                <td>
-                    Mathematics
-                </td>
-
-                <td>
-                    Assignment 1
-                </td>
-
-                <td>
-                    20-Aug-2026
-                </td>
-
-                <td>
-                    Pending
-                </td>
-
-            </tr>
+                </tr>
 
 
-            <tr>
+                <tr>
 
-                <td>
-                    Computer Engineering
-                </td>
+                    <td>
+                        Mathematics
+                    </td>
 
-                <td>
-                    Assignment 2
-                </td>
+                    <td>
+                        Assignment 1
+                    </td>
 
-                <td>
-                    22-Aug-2026
-                </td>
+                    <td>
+                        20-Aug-2026
+                    </td>
 
-                <td>
-                    Submitted
-                </td>
+                    <td>
+                        <span class="status status--pending">Pending</span>
+                    </td>
 
-            </tr>
-
-
-            <tr>
-
-                <td>
-                    Physics
-                </td>
-
-                <td>
-                    Assignment 3
-                </td>
-
-                <td>
-                    25-Aug-2026
-                </td>
-
-                <td>
-                    Pending
-                </td>
-
-            </tr>
+                </tr>
 
 
-            <tr>
+                <tr>
 
-                <td>
-                    English
-                </td>
+                    <td>
+                        Computer Engineering
+                    </td>
 
-                <td>
-                    Assignment 1
-                </td>
+                    <td>
+                        Assignment 2
+                    </td>
 
-                <td>
-                    28-Aug-2026
-                </td>
+                    <td>
+                        22-Aug-2026
+                    </td>
 
-                <td>
-                    Submitted
-                </td>
+                    <td>
+                        <span class="status status--paid">Submitted</span>
+                    </td>
 
-            </tr>
-
-        </table>
-
-    </div>
+                </tr>
 
 
-</body>
+                <tr>
+
+                    <td>
+                        Physics
+                    </td>
+
+                    <td>
+                        Assignment 3
+                    </td>
+
+                    <td>
+                        25-Aug-2026
+                    </td>
+
+                    <td>
+                        <span class="status status--pending">Pending</span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        English
+                    </td>
+
+                    <td>
+                        Assignment 1
+                    </td>
+
+                    <td>
+                        28-Aug-2026
+                    </td>
+
+                    <td>
+                        <span class="status status--paid">Submitted</span>
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </div>
+
+    </main>
+
+    </body>
 
 </html>

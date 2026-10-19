@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Enter Student ID";
     }
     elseif (!preg_match("/^[0-9]{2}[A-Z]{3}[0-9]{3}$/", $studentid)) {
-        $message = "Student ID must be like 25DCE003";
+        $message = "Student ID must be like 25CE015";
     }
     elseif ($fullname == "") {
         $message = "Enter your name";
@@ -193,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         type="text"
                         id="studentid"
                         name="studentid"
-                        placeholder="Example: 25DCE001"
+                        placeholder="Example: 25CE015"
                         maxlength="8"
                         required>
 

@@ -13,12 +13,10 @@ require_once "../db.php";
 $message = "";
 
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $student_id = trim($_POST["student_id"] ?? "");
     $event_id = trim($_POST["event_id"] ?? "");
-
 
 
     if ($student_id == "") {
@@ -26,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $message = "Please enter Student ID.";
 
     }
-
 
     elseif ($event_id == "") {
 
@@ -37,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     else {
 
         try {
-
 
             $student = $conn->prepare(
                 "SELECT student_id
@@ -57,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             else {
-
 
                 $check = $conn->prepare(
                     "SELECT registration_id
@@ -80,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
 
                 else {
-
 
                     $sql = "INSERT INTO registrations
                             (student_id, event_id)
@@ -115,7 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 
-
 try {
 
     $events = $conn->query(
@@ -136,7 +129,6 @@ catch (PDOException $e) {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -149,110 +141,52 @@ catch (PDOException $e) {
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>StudentHub - Event Registration</title>
+    <title>Event Registration | Student HUB Portal</title>
 
 
     <link
         rel="stylesheet"
-        href="../css/register.css">
+        href="../css/style.css">
 
 </head>
 
 
 <body>
 
-
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
-        <!-- Navigation -->
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <nav>
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-            <ul>
-
-
-                <li>
-                    <a href="profile.php">
-                        Profile
-                    </a>
-                </li>
+            </div>
 
 
-                <li>
-                    <a href="attendance.php">
-                        Attendance
-                    </a>
-                </li>
+            <!-- Navigation -->
+
+            <nav id="navbar">
+                <?= render_dynamic_menu("student") ?>
+            </nav>
 
 
-                <li>
-                    <a href="assignment.php">
-                        Assignment
-                    </a>
-                </li>
+            <!-- Login -->
 
+            <div class="logout-text reveal" style="animation-delay:0.2s">
 
-               
+                <a href="logout.php">
+                    Logout
+                </a>
 
+            </div>
 
-                <li>
-                    <a href="event_register.php">
-                        Event Registration
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="index.php">
-                        Dashboard
-                    </a>
-                </li>
-
-
-
-                <li>
-                    <a href="courses.php">
-                        Courses
-                    </a>
-                </li>
-                <li>
-                    <a href="students.csv">
-                        Faculty
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="contact.php">
-                        Contact
-                    </a>
-                </li>
-
-
-            </ul>
-
-        </nav>
-
-
-        <!-- Login -->
-
-        <div class="logout-text">
-
-            <a href="login.php">
-                Login
-            </a>
 
         </div>
 
@@ -260,27 +194,26 @@ catch (PDOException $e) {
     </header>
 
 
-
     <!-- Event Registration -->
 
     <main>
 
-        <section>
+        <div class="page-title-wrap reveal">
+            <h1>Event Registration</h1>
+            <span class="tag">CAMPUS EVENTS</span>
+        </div>
 
+        <div class="page-intro reveal">Register for upcoming campus events using your Student ID.</div>
 
-            <h2>
-                Event Registration
-            </h2>
-
+        <section class="box reveal" style="max-width:640px;margin:0 auto 44px auto;">
 
             <?php
 
             if ($message != "") {
 
-                echo "<p>";
-
+                $type = strpos($message, "successfully") !== false ? "success" : "error";
+                echo "<p class=\"login-message login-message--{$type}\">";
                 echo htmlspecialchars($message);
-
                 echo "</p>";
 
             }
@@ -295,16 +228,13 @@ catch (PDOException $e) {
 
                 <!-- Student ID -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="student_id">
 
                         Student ID:
 
                     </label>
-
-                    <br>
-
 
                     <input
                         type="text"
@@ -314,13 +244,13 @@ catch (PDOException $e) {
                         maxlength="8"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Event -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="event_id">
 
@@ -329,7 +259,6 @@ catch (PDOException $e) {
                     </label>
 
                     <br>
-
 
                     <select
                         id="event_id"
@@ -380,38 +309,22 @@ catch (PDOException $e) {
 
                     </select>
 
-                </p>
+                </div>
 
 
 
                 <!-- Submit Button -->
 
-                <button
-                    type="submit">
+                <div class="btn-group reveal" style="margin-top:10px;">
+                    <button type="submit" class="btn btn--accent">Register for Event</button>
+                    <button type="reset" class="btn btn--ghost">Reset</button>
+                </div>
 
-                    Register for Event
+                </form>
 
-                </button>
+            </section>
 
-
-                <!-- Reset Button -->
-
-                <button
-                    type="reset">
-
-                    Reset
-
-                </button>
-
-
-            </form>
-
-
-        </section>
-
-    </main>
-
-
+        </main>
 
     <!-- Footer -->
 

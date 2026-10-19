@@ -22,169 +22,120 @@ if (!$student) {
 <head>
 
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Profile</title>
+    <title>Profile | Student HUB Portal</title>
 
     <link
         rel="stylesheet"
-        href="../css/profile.css">
+        href="../css/style.css">
 
 </head>
 
 
 <body>
 
-
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
-        <!-- Navigation -->
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <nav>
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-            <ul>
-
-                <li>
-                    <a href="profile.php">
-                        Profile
-                    </a>
-                </li>
-
-                <li>
-                    <a href="attendance.php">
-                        Attendance
-                    </a>
-                </li>
-
-                <li>
-                    <a href="assignment.php">
-                        Assignment
-                    </a>
-                </li>
-
-                
-                <li>
-                    <a href="event_register.php">
-                        Event Registration
-                    </a>
-                </li>
-
-                <li>
-                    <a href="index.php">
-                        Dashboard
-                    </a>
-                </li>
-               
-                <li>
-                    <a href="courses.php">
-                        Courses
-                    </a>
-                </li>
-                <li>
-                    <a href="students.csv">
-                        Faculty
-                    </a>
-                </li>
-
-                <li>
-                    <a href="contact.php">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
+            </div>
 
 
-        </nav>
+            <!-- Navigation -->
+
+            <nav id="navbar">
+                <?= render_dynamic_menu("student") ?>
+            </nav>
 
 
-        <!-- Login -->
+            <!-- Login -->
 
-        <div class="logout-text">
+            <div class="logout-text reveal" style="animation-delay:0.2s">
 
-            <a href="logout.php">
-                Logout
-            </a>
+                <a href="logout.php">
+                    Logout
+                </a>
+
+            </div>
+
 
         </div>
 
 
     </header>
 
-
     <!-- Profile Section -->
 
-    <div class="profile-card">
+    <main>
+
+        <div class="page-title-wrap reveal">
+            <h1>Student Profile</h1>
+            <span class="tag">ACCOUNT DETAILS</span>
+        </div>
+
+        <div class="profile-card box reveal" style="max-width:560px;margin:0 auto 44px auto;text-align:center;">
+
+            <img
+                src="profile.png"
+                alt="Student Photo"
+                class="profile-img"
+                style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid var(--border-focus);margin:0 auto 16px auto;display:block;box-shadow:0 0 24px var(--accent-glow);">
+
+            <div class="profile-info">
+
+                <h2>
+                    <?= htmlspecialchars($student['full_name']) ?>
+                </h2>
+
+                <p>
+                    <strong>Roll No:</strong>
+                    <span style="font-family:var(--font-mono);color:var(--accent);">
+                        <?= htmlspecialchars($student['student_id']) ?>
+                    </span>
+                </p>
 
 
-        <img
-            src="profile.png"
-            alt="Student Photo"
-            class="profile-img">
+                <p>
+                    <strong>Department:</strong> CSPIT
+                </p>
 
 
-        <div class="profile-info">
+                <p>
+                    <strong>Year:</strong> II Year
+                </p>
 
 
-            <h2>
-                Student Profile
-            </h2>
+                <p>
+                    <strong>Email:</strong>
+                    <?= htmlspecialchars($student['email']) ?>
+                </p>
 
 
-            <p>
-                <strong>Name:</strong>
-                <?= htmlspecialchars($student['full_name']) ?>
-            </p>
+                <p>
+                    <strong>Phone:</strong>
+                    <span style="font-family:var(--font-mono);">
+                        <?= htmlspecialchars($student['mobile']) ?>
+                    </span>
+                </p>
 
-
-            <p>
-                <strong>Roll No:</strong>
-                <?= htmlspecialchars($student['student_id']) ?>
-            </p>
-
-
-            <p>
-                <strong>Department:</strong>
-                CSPIT
-            </p>
-
-
-            <p>
-                <strong>Year:</strong>
-                II Year
-            </p>
-
-
-            <p>
-                <strong>Email:</strong>
-                <?= htmlspecialchars($student['email']) ?>
-            </p>
-
-
-            <p>
-                <strong>Phone:</strong>
-                <?= htmlspecialchars($student['mobile']) ?>
-            </p>
-
+            </div>
 
         </div>
 
-    </div>
+    </main>
 
 </body>
 

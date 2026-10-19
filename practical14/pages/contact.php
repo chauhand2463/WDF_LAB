@@ -12,194 +12,125 @@ if ($_SESSION["role"] !== "student") {
 <head>
 
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Contact Us</title>
+    <title>Contact Us | Student HUB Portal</title>
 
     <link
         rel="stylesheet"
-        href="../css/contact.css">
+        href="../css/style.css">
 
 </head>
 
 
 <body>
 
-
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <!-- Logo -->
-
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <!-- Navigation -->
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-        <nav>
-
-            <ul>
-
-                <li>
-                    <a href="profile.php">
-                        Profile
-                    </a>
-                </li>
+            </div>
 
 
-                <li>
-                    <a href="attendance.php">
-                        Attendance
-                    </a>
-                </li>
+            <!-- Navigation -->
+
+            <nav id="navbar">
+                <?= render_dynamic_menu("student") ?>
+            </nav>
 
 
-                <li>
-                    <a href="assignment.php">
-                        Assignment
-                    </a>
-                </li>
+            <!-- Login -->
 
+            <div class="logout-text reveal" style="animation-delay:0.2s">
 
+                <a href="logout.php">
+                    Logout
+                </a>
 
+            </div>
 
-                <li>
-                    <a href="event_register.php">
-                        Event Registration
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="index.php">
-                        Dashboard
-                    </a>
-                </li>
-        
-
-                <li>
-                    <a href="courses.php">
-                        Courses
-                    </a>
-                </li>
-                <li>
-                    <a href="students.csv">
-                        Faculty
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="contact.php">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-
-
-        <!-- Login -->
-
-        <div class="logout-text">
-
-            <a href="login.php">
-                Logout
-            </a>
 
         </div>
 
 
     </header>
 
-
-
     <!-- Contact Section -->
 
-    <section class="contact">
+    <main>
 
-        <div class="contact-container">
-
-
-            <h1>
-                Contact Us
-            </h1>
-
-
-
-            <form>
-
-
-                <div class="input-group">
-
-                    <input
-                        type="text"
-                        placeholder="Your Name"
-                        required>
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <input
-                        type="email"
-                        placeholder="Your Email"
-                        required>
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <input
-                        type="text"
-                        placeholder="Subject"
-                        required>
-
-                </div>
-
-
-
-                <div class="input-group">
-
-                    <textarea
-                        rows="6"
-                        placeholder="Your Message"
-                        required></textarea>
-
-                </div>
-
-
-
-                <button type="submit">
-                    Send Message
-                </button>
-
-
-            </form>
-
-
+        <div class="page-title-wrap reveal">
+            <h1>Contact Us</h1>
+            <span class="tag">GET IN TOUCH</span>
         </div>
 
-    </section>
+        <div class="page-intro reveal">Have a question or need support? Send us a message and we’ll respond shortly.</div>
 
+        <section class="contact box reveal" style="max-width:640px;margin:0 auto 44px auto;">
+
+            <div class="contact-container">
+
+                <form>
+
+                    <div class="form-group reveal">
+
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            required>
+
+                    </div>
+
+                    <div class="form-group reveal">
+
+                        <input
+                            type="email"
+                            placeholder="Your Email"
+                            required>
+
+                    </div>
+
+                    <div class="form-group reveal">
+
+                        <input
+                            type="text"
+                            placeholder="Subject"
+                            required>
+
+                    </div>
+
+                    <div class="form-group reveal">
+
+                        <textarea
+                            rows="6"
+                            placeholder="Your Message"
+                            required></textarea>
+
+                    </div>
+
+                    <div class="btn-group reveal" style="margin-top:8px;">
+                        <button type="submit" class="btn btn--accent">Send Message</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 

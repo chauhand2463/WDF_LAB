@@ -110,227 +110,45 @@ function h($value): string
 
     <link rel="stylesheet" href="../css/style.css">
 
-    <style>
-        .admin-dashboard {
-            max-width: 1150px;
-            margin: 30px auto;
-            padding: 20px;
-        }
-
-        .admin-welcome {
-            margin-bottom: 25px;
-        }
-
-        .admin-welcome h1 {
-            margin-bottom: 8px;
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 25px 0;
-        }
-
-        .admin-card {
-            padding: 24px;
-            border-radius: 12px;
-            background: var(--card-bg, #fff);
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
-        }
-
-        .admin-card h2 {
-            font-size: 18px;
-            margin-top: 0;
-        }
-
-        .admin-number {
-            font-size: 32px;
-            font-weight: bold;
-            margin: 12px 0;
-        }
-
-        .admin-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .admin-action {
-            display: block;
-            padding: 24px;
-            border-radius: 12px;
-            background: var(--card-bg, #fff);
-            color: inherit;
-            text-decoration: none;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
-            transition: transform 0.2s ease;
-        }
-
-        .admin-action:hover {
-            transform: translateY(-4px);
-        }
-
-        .admin-action h2 {
-            margin-top: 0;
-        }
-
-        .admin-action:focus-visible {
-            outline: 3px solid #2563eb;
-            outline-offset: 3px;
-        }
-
-        .admin-message {
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 8px;
-            background: #fff3cd;
-            color: #664d03;
-        }
-
-        .admin-navigation {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .admin-navigation a {
-            text-decoration: none;
-        }
-
-        .admin-panels {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        .admin-table th,
-        .admin-table td {
-            text-align: left;
-            padding: 9px 10px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .admin-table th {
-            background: #f3f4f6;
-        }
-
-        .activity-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 14px;
-        }
-
-        .activity-list li {
-            padding: 9px 0;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .activity-action {
-            font-weight: 600;
-        }
-
-        .activity-time {
-            color: #6b7280;
-            font-size: 12px;
-        }
-
-        .chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 14px;
-            height: 180px;
-            padding-top: 20px;
-        }
-
-        .chart-bar {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            height: 100%;
-            gap: 6px;
-        }
-
-        .chart-fill {
-            width: 100%;
-            background: linear-gradient(180deg, #3b82f6, #2563eb);
-            border-radius: 6px 6px 0 0;
-            min-height: 4px;
-        }
-
-        .chart-value {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .chart-label {
-            font-size: 12px;
-            color: #4b5563;
-        }
-
-        .panel-empty {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        @media (max-width: 600px) {
-            .admin-dashboard {
-                padding: 12px;
-            }
-
-            .admin-card,
-            .admin-action {
-                padding: 18px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-    <header class="header">
+    <header class="header reveal">
 
-        <div class="logo">
-            <img src="../images/charusat.png" alt="CHARUSAT Logo">
+        <div class="header-inner reveal" style="animation-delay:0.05s">
+
+            <div class="logo reveal" style="animation-delay:0.1s">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+            </div>
+
+            <button
+                id="menuBtn"
+                class="menu-btn"
+                type="button"
+                aria-label="Open Menu"
+                aria-expanded="false">
+                ☰
+            </button>
+
+            <nav id="navbar">
+                <?php foreach (build_dynamic_menu("admin") as $item): ?>
+                    <a href="<?= h($item["href"]) ?>"
+                       <?= $item["label"] === "Dashboard" ? 'aria-current="page"' : "" ?>>
+                        <?= h($item["label"]) ?>
+                    </a>
+                <?php endforeach; ?>
+            </nav>
+
         </div>
-
-        <button
-            id="menuBtn"
-            class="menu-btn"
-            type="button"
-            aria-label="Open Menu"
-            aria-expanded="false">
-            ☰
-        </button>
-
-        <nav id="navbar" class="admin-navigation">
-            <?php foreach (build_dynamic_menu("admin") as $item): ?>
-                <a href="<?= h($item["href"]) ?>"
-                   <?= $item["label"] === "Dashboard" ? 'aria-current="page"' : "" ?>>
-                    <?= h($item["label"]) ?>
-                </a>
-            <?php endforeach; ?>
-        </nav>
 
     </header>
 
-    <main class="admin-dashboard">
+    <main class="admin-dashboard reveal">
 
-        <section class="admin-welcome">
-            <h1>Welcome, <?= h($adminName) ?> (Administrator)</h1>
-
+        <section class="admin-welcome reveal">
+            <h1>Welcome, <?= h($adminName) ?></h1>
+            <span class="tag">ADMINISTRATION CONSOLE</span>
             <p>
                 Role-based administration console. Menu options are generated from
                 your <strong><?= h($_SESSION["role"]) ?></strong> role and all
@@ -339,33 +157,35 @@ function h($value): string
         </section>
 
         <?php if ($dbMessage !== ""): ?>
-            <p class="admin-message" role="status"><?= h($dbMessage) ?></p>
+            <p class="login-message login-message--error" role="status" style="max-width:1100px;margin:0 auto 24px auto;text-align:left;">
+                <?= h($dbMessage) ?>
+            </p>
         <?php endif; ?>
 
-        <section aria-labelledby="overviewTitle">
+        <section aria-labelledby="overviewTitle" class="reveal" style="animation-delay:0.15s;">
             <h2 id="overviewTitle">Dashboard Overview</h2>
 
-            <div class="admin-stats">
+            <div class="admin-stats reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:25px 0;">
 
-                <article class="admin-card">
+                <article class="admin-card card reveal">
                     <h2>Students</h2>
                     <p class="admin-number"><?= number_format($totalStudents) ?></p>
                     <p>Accounts with the student role.</p>
                 </article>
 
-                <article class="admin-card">
+                <article class="admin-card card reveal">
                     <h2>Administrators</h2>
                     <p class="admin-number"><?= number_format($totalAdmins) ?></p>
                     <p>Accounts with the admin role.</p>
                 </article>
 
-                <article class="admin-card">
+                <article class="admin-card card reveal">
                     <h2>Total Events</h2>
                     <p class="admin-number"><?= number_format($totalEvents) ?></p>
                     <p><?= number_format($openEvents) ?> currently open.</p>
                 </article>
 
-                <article class="admin-card">
+                <article class="admin-card card reveal">
                     <h2>Registrations</h2>
                     <p class="admin-number"><?= number_format($totalRegistrations) ?></p>
                     <p>Total event registrations.</p>
@@ -374,41 +194,41 @@ function h($value): string
             </div>
         </section>
 
-        <section aria-labelledby="actionsTitle">
+        <section aria-labelledby="actionsTitle" class="reveal" style="animation-delay:0.25s;">
             <h2 id="actionsTitle">Administration Tools</h2>
 
-            <div class="admin-actions">
+            <div class="admin-actions reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:20px;">
 
-                <a class="admin-action" href="adminpages/manage_students.php">
-                    <h2>Manage Students</h2>
-                    <p>Add, view, edit, delete, search, and filter student records.</p>
-                    <strong>Open Student Management →</strong>
+                <a class="admin-action btn btn--ghost reveal" href="adminpages/manage_students.php" style="padding:24px;text-align:left;display:block;">
+                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Manage Students</h2>
+                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Add, view, edit, delete, search, and filter student records.</p>
+                    <strong style="color:var(--accent);">Open Student Management →</strong>
                 </a>
 
-                <a class="admin-action" href="adminpages/events.php">
-                    <h2>Manage Events</h2>
-                    <p>Create events, upload posters and control event status.</p>
-                    <strong>Open Events →</strong>
+                <a class="admin-action btn btn--ghost reveal" href="adminpages/events.php" style="padding:24px;text-align:left;display:block;">
+                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Manage Events</h2>
+                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Create events, upload posters and control event status.</p>
+                    <strong style="color:var(--accent);">Open Events →</strong>
                 </a>
 
-                <a class="admin-action" href="ajax_crud.php">
-                    <h2>AJAX CRUD</h2>
-                    <p>Manage students and events asynchronously via the JSON API.</p>
-                    <strong>Open AJAX CRUD →</strong>
+                <a class="admin-action btn btn--ghost reveal" href="ajax_crud.php" style="padding:24px;text-align:left;display:block;">
+                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">AJAX CRUD</h2>
+                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Manage students and events asynchronously via the JSON API.</p>
+                    <strong style="color:var(--accent);">Open AJAX CRUD →</strong>
                 </a>
 
-                <a class="admin-action" href="adminpages/audit_logs.php">
-                    <h2>Audit Log</h2>
-                    <p>Review the trail of important administrative actions.</p>
-                    <strong>View Audit Log →</strong>
+                <a class="admin-action btn btn--ghost reveal" href="adminpages/audit_logs.php" style="padding:24px;text-align:left;display:block;">
+                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Audit Log</h2>
+                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Review the trail of important administrative actions.</p>
+                    <strong style="color:var(--accent);">View Audit Log →</strong>
                 </a>
 
             </div>
         </section>
 
-        <div class="admin-panels">
+        <div class="admin-panels reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:25px;animation-delay:0.35s;">
 
-            <section class="admin-card" aria-labelledby="latestRegTitle">
+            <section class="admin-card card reveal" aria-labelledby="latestRegTitle">
                 <h2 id="latestRegTitle">Latest Registrations</h2>
 
                 <?php if ($latestRegistrations): ?>
@@ -426,7 +246,7 @@ function h($value): string
                                 <td>
                                     <?= h($reg["full_name"]) ?>
                                     <br>
-                                    <small><?= h($reg["student_id"]) ?></small>
+                                    <small style="font-family:var(--font-mono);color:var(--text-muted);"><?= h($reg["student_id"]) ?></small>
                                 </td>
                                 <td><?= h($reg["event_name"]) ?></td>
                                 <td><?= h($reg["registered_at"]) ?></td>
@@ -439,7 +259,7 @@ function h($value): string
                 <?php endif; ?>
             </section>
 
-            <section class="admin-card" aria-labelledby="recentLogsTitle">
+            <section class="admin-card card reveal" aria-labelledby="recentLogsTitle">
                 <h2 id="recentLogsTitle">Recent Audit Activity</h2>
 
                 <?php if ($recentLogs): ?>
@@ -467,7 +287,7 @@ function h($value): string
 
         </div>
 
-        <section class="admin-card" aria-labelledby="chartTitle" style="margin-top:20px;">
+        <section class="admin-card card reveal" aria-labelledby="chartTitle" style="margin-top:20px;animation-delay:0.45s;">
             <h2 id="chartTitle">Event Registrations by Month</h2>
 
             <?php if ($monthlyRegistrations): ?>

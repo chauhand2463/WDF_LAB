@@ -164,7 +164,7 @@ if ($_SESSION["role"] !== "student") {
 
             <p>
                 <strong>Email:</strong>
-                amrutiyaaniket@gmail.com
+                dkc074837@gmail.com
             </p>
 
 

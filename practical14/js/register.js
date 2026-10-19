@@ -167,7 +167,7 @@ form.addEventListener("submit", function (event) {
 
 
 
-    window.location.href = "login.html";
+    window.location.href = "login.php";
 
 });
 

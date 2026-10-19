@@ -3,9 +3,7 @@
 session_start();
 
 if (!isset($_SESSION["csrf_token"])) {
-
     $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
-
 }
 
 require_once "../db.php";
@@ -14,7 +12,6 @@ $message = "";
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
 
     if (
         !isset($_POST["csrf_token"]) ||
@@ -33,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $course = trim($_POST["course"]);
         $password = $_POST["password"];
         $confirm = $_POST["confirm"];
-
 
 
         if ($studentid == "") {
@@ -90,7 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             try {
 
-
                 $check = $conn->prepare(
                     "SELECT student_id, email
                      FROM students
@@ -111,12 +106,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 else {
 
-
                     $hashedPassword = password_hash(
                         $password,
                         PASSWORD_DEFAULT
                     );
-
 
 
                     $sql = "INSERT INTO students
@@ -150,7 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ]);
 
 
-
                     $file = "../data/students.csv";
 
                     $fp = fopen($file, "a");
@@ -164,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
                     else {
 
-
                         if (filesize($file) == 0) {
 
                             fputcsv($fp, [
@@ -177,7 +168,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             ]);
 
                         }
-
 
 
                         fputcsv($fp, [
@@ -215,7 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -233,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <link
         rel="stylesheet"
-        href="../css/register.css">
+        href="../css/style.css">
 
 </head>
 
@@ -243,48 +232,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
-        <!-- Navigation -->
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <nav>
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-            <ul>
-
-
-
-                <li>
-
-                    <a href="register.php">
-                        Register
-                    </a>
-
-                </li>
+            </div>
 
 
-                 
+            <!-- Navigation -->
+
+            <nav>
+
+                <ul class="nav-list">
 
 
-            </ul>
+                    <li>
 
-        </nav>
+                        <a href="login.php">
+                            Sign In
+                        </a>
+
+                    </li>
 
 
-        <!-- Login -->
+                     
 
-        <div class="logout-text">
+                </ul>
 
-            Sign up
+            </nav>
+
 
         </div>
 
@@ -292,24 +276,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </header>
 
 
-
     <!-- Registration Section -->
 
     <main>
 
-        <section>
+        <section class="box reveal" style="max-width:560px;margin:0 auto 44px auto;">
 
-
-            <h2>
-                Student Registration
-            </h2>
-
+            <div class="page-title-wrap reveal" style="margin-bottom:8px;">
+                <h2>Student Registration</h2>
+                <span class="tag">CREATE ACCOUNT</span>
+            </div>
 
             <?php
 
             if ($message != "") {
 
-                echo "<p>";
+                echo "<p class=\"login-message login-message--error\">";
 
                 echo htmlspecialchars($message);
 
@@ -321,6 +303,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <form
+                id="registerForm"
                 method="POST"
                 action="register.php">
 
@@ -337,38 +320,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ?>">
 
 
-
                 <!-- Student ID -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="studentid">
                         Student ID:
                     </label>
 
-                    <br>
-
                     <input
                         type="text"
                         id="studentid"
                         name="studentid"
-                        placeholder="Example: 25DCE001"
+                        placeholder="Example: 25CE015"
                         maxlength="8"
                         required>
 
-                </p>
-
+                </div>
 
 
                 <!-- Full Name -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="fullname">
                         Full Name:
                     </label>
-
-                    <br>
 
                     <input
                         type="text"
@@ -377,19 +354,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         placeholder="Enter your full name"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Email -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="email">
                         Email:
                     </label>
-
-                    <br>
 
                     <input
                         type="email"
@@ -398,19 +373,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         placeholder="Enter your email"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Mobile -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="mobile">
                         Mobile Number:
                     </label>
-
-                    <br>
 
                     <input
                         type="tel"
@@ -420,19 +393,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         maxlength="10"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Course -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="course">
                         Course:
                     </label>
-
-                    <br>
 
                     <select
                         id="course"
@@ -461,19 +432,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     </select>
 
-                </p>
+                </div>
 
 
 
                 <!-- Password -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="password">
                         Password:
                     </label>
-
-                    <br>
 
                     <input
                         type="password"
@@ -482,19 +451,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         placeholder="Enter password"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Confirm Password -->
 
-                <p>
+                <div class="form-group reveal">
 
                     <label for="confirm">
                         Confirm Password:
                     </label>
-
-                    <br>
 
                     <input
                         type="password"
@@ -503,27 +470,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         placeholder="Confirm password"
                         required>
 
-                </p>
+                </div>
 
 
 
                 <!-- Buttons -->
 
-                <button
-                    type="submit">
-
-                    Register
-
-                </button>
-
-
-                <button
-                    type="reset">
-
-                    Reset
-
-                </button>
-
+                <div class="btn-group reveal" style="margin-top:10px;">
+                    <button type="submit" class="btn btn--accent">Register</button>
+                    <button type="reset" class="btn btn--ghost">Reset</button>
+                </div>
 
             </form>
 
@@ -531,7 +487,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
 
     </main>
-
 
 
     <!-- Footer -->

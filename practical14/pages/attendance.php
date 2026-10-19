@@ -12,129 +12,73 @@ if ($_SESSION["role"] !== "student") {
 <head>
 
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Attendance</title>
+    <title>Attendance | Student HUB Portal</title>
 
     <link
         rel="stylesheet"
-        href="../css/attendance.css">
+        href="../css/style.css">
 
 </head>
 
 
 <body>
 
-
     <!-- Header -->
 
-    <header class="header">
+    <header class="header reveal">
 
 
-        <!-- Logo -->
-
-        <div class="logo">
-
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-
-        </div>
+        <div class="header-inner reveal" style="animation-delay:0.05s">
 
 
+            <div class="logo reveal" style="animation-delay:0.1s">
 
-        <!-- Navigation -->
+                <img
+                    src="../images/charusat.png"
+                    alt="CHARUSAT Logo">
 
-        <nav>
-
-            <ul>
-
-                <li>
-                    <a href="profile.php">
-                        Profile
-                    </a>
-                </li>
+            </div>
 
 
-                <li>
-                    <a href="attendance.php">
-                        Attendance
-                    </a>
-                </li>
+            <!-- Navigation -->
+
+            <nav id="navbar">
+                <?= render_dynamic_menu("student") ?>
+            </nav>
 
 
-                <li>
-                    <a href="assignment.php">
-                        Assignment
-                    </a>
-                </li>
+            <!-- Login -->
 
+            <div class="logout-text reveal" style="animation-delay:0.2s">
 
-                
+                <a href="logout.php">
+                    Logout
+                </a>
 
+            </div>
 
-                <li>
-                    <a href="event_register.php">
-                        Event Registration
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="index.php">
-                        Dashboard
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="courses.php">
-                        Courses
-                    </a>
-                </li>
-                <li>
-                    <a href="students.csv">
-                        Faculty
-                    </a>
-                </li>
-
-
-                <li>
-                    <a href="contact.php">
-                        Contact
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-
-
-        <!-- Login -->
-
-        <div class="logout-text">
-
-            <a href="login.php">
-                Logout
-            </a>
 
         </div>
 
 
     </header>
 
-
-
     <!-- Attendance -->
 
     <main>
 
-        <div class="box">
+        <div class="page-title-wrap reveal">
+            <h1>Attendance</h1>
+            <span class="tag">CLASS RECORDS</span>
+        </div>
 
+        <div class="page-intro reveal">Track your attendance across all registered courses this semester.</div>
+
+        <div class="box reveal" style="max-width:700px;margin:0 auto 44px auto;">
 
             <table>
 
@@ -154,24 +98,11 @@ if ($_SESSION["role"] !== "student") {
                 <tr>
 
                     <td>
-                        Network
+                        Computer Network
                     </td>
 
                     <td>
-                        85%
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Java
-                    </td>
-
-                    <td>
-                        90%
+                        <span class="status status--paid">85%</span>
                     </td>
 
                 </tr>
@@ -180,11 +111,24 @@ if ($_SESSION["role"] !== "student") {
                 <tr>
 
                     <td>
-                        WDF
+                        Java Programming
                     </td>
 
                     <td>
-                        80%
+                        <span class="status status--paid">90%</span>
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Web Development
+                    </td>
+
+                    <td>
+                        <span class="status status--pending">80%</span>
                     </td>
 
                 </tr>

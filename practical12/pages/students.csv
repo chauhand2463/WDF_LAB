@@ -1,3 +1,11 @@
-"Full Name",Email,Mobile,Course,Password
-"Dhairy Chauhan",dkc074837@gmail.com,9428280245,B.tech,$2y$10$ztLUbKExZ147yeK.LZp4pucN52y1H94TVHD72ZLs1D86/oMMo7ZUu
-25CE015,"Dhairy Chauhan",dkc074837@gmail.com,9428280245,B.tech,$2y$10$FY/ppOCo1JmxYTesvZ8toOw87Z8E1yQMaUGgN6HcctlcFL0e/YFxe
+Student ID,Full Name,Course,Semester,Email,Mobile,University
+25CE001,Monkey D. Luffy,Computer Engineering,3,luffy@onepiece.com,9876543210,CHARUSAT
+25CE002,Roronoa Zoro,Computer Engineering,3,zoro@onepiece.com,9876543211,CHARUSAT
+25CE003,Nami Catburglar,Computer Engineering,3,nami@onepiece.com,9909835906,CHARUSAT
+25CE004,Usopp Sniper,Computer Engineering,3,usopp@onepiece.com,9876543213,CHARUSAT
+25CE005,Sanji Vinsmoke,Computer Engineering,3,sanji@onepiece.com,9876543214,CHARUSAT
+25CE006,Tony Tony Chopper,Computer Engineering,3,chopper@onepiece.com,9876543215,CHARUSAT
+25CE007,Nico Robin,Computer Engineering,3,robin@onepiece.com,9876543216,CHARUSAT
+25CE008,Franky Cyborg,Computer Engineering,3,franky@onepiece.com,9876543217,CHARUSAT
+25CE009,Brook Soul,Computer Engineering,3,brook@onepiece.com,9876543218,CHARUSAT
+25CE010,Jinbe Knight,Computer Engineering,3,jinbe@onepiece.com,9876543219,CHARUSAT
