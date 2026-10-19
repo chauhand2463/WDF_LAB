@@ -217,7 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>StudentHub - Register</title>
+    <title>Student Registration | Student HUB</title>
 
 
     <link
@@ -229,73 +229,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
+    <div class="auth-shell reveal">
 
-    <!-- Header -->
+        <div class="auth-card">
 
-    <header class="header reveal">
-
-
-        <div class="header-inner reveal" style="animation-delay:0.05s">
-
-
-            <div class="logo reveal" style="animation-delay:0.1s">
-
-                <img
-                    src="../images/charusat.png"
-                    alt="CHARUSAT Logo">
-
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
             </div>
 
-
-            <!-- Navigation -->
-
-            <nav>
-
-                <ul class="nav-list">
-
-
-                    <li>
-
-                        <a href="login.php">
-                            Sign In
-                        </a>
-
-                    </li>
-
-
-                     
-
-                </ul>
-
-            </nav>
-
-
-        </div>
-
-
-    </header>
-
-
-    <!-- Registration Section -->
-
-    <main>
-
-        <section class="box reveal" style="max-width:560px;margin:0 auto 44px auto;">
-
-            <div class="page-title-wrap reveal" style="margin-bottom:8px;">
-                <h2>Student Registration</h2>
-                <span class="tag">CREATE ACCOUNT</span>
-            </div>
+            <h1>Create Account</h1>
+            <p>Register as a new student.</p>
 
             <?php
 
             if ($message != "") {
 
-                echo "<p class=\"login-message login-message--error\">";
-
+                $type = strpos($message, "Successful") !== false ? "success" : "error";
+                echo "<div class=\"form-message form-message--{$type}\">";
                 echo htmlspecialchars($message);
-
-                echo "</p>";
+                echo "</div>";
 
             }
 
@@ -320,8 +273,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ?>">
 
 
-                <!-- Student ID -->
-
                 <div class="form-group reveal">
 
                     <label for="studentid">
@@ -338,9 +289,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-
-                <!-- Full Name -->
-
                 <div class="form-group reveal">
 
                     <label for="fullname">
@@ -355,10 +303,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         required>
 
                 </div>
-
-
-
-                <!-- Email -->
 
                 <div class="form-group reveal">
 
@@ -375,10 +319,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-
-
-                <!-- Mobile -->
-
                 <div class="form-group reveal">
 
                     <label for="mobile">
@@ -394,10 +334,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         required>
 
                 </div>
-
-
-
-                <!-- Course -->
 
                 <div class="form-group reveal">
 
@@ -434,10 +370,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-
-
-                <!-- Password -->
-
                 <div class="form-group reveal">
 
                     <label for="password">
@@ -452,10 +384,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         required>
 
                 </div>
-
-
-
-                <!-- Confirm Password -->
 
                 <div class="form-group reveal">
 
@@ -472,10 +400,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-
-
-                <!-- Buttons -->
-
                 <div class="btn-group reveal" style="margin-top:10px;">
                     <button type="submit" class="btn btn--accent">Register</button>
                     <button type="reset" class="btn btn--ghost">Reset</button>
@@ -483,22 +407,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </form>
 
+        </div>
 
-        </section>
-
-    </main>
-
-
-    <!-- Footer -->
+    </div>
 
     <footer>
-
-        <p>
-            @2026 Student HUB Portal
-        </p>
-
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
 
+    <script src="../js/register.js"></script>
 
 </body>
 

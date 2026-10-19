@@ -200,63 +200,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CHARUSAT | Student Login</title>
+    <title>Student Login | CHARUSAT</title>
 
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <!-- Header -->
-    <header class="header reveal">
+    <div class="auth-shell reveal">
 
-        <div class="header-inner reveal" style="animation-delay:0.05s">
+        <div class="auth-card">
 
-            <div class="logo reveal" style="animation-delay:0.1s">
+            <div class="logo">
                 <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
             </div>
 
-            <nav>
-                <ul class="nav-list">
-                    <li><a href="register.php">Create Account</a></li>
-                </ul>
-            </nav>
-
-        </div>
-
-    </header>
-
-    <main>
-
-        <div class="page-title-wrap reveal">
             <h1>Welcome Back</h1>
-            <span class="tag">STUDENT LOGIN</span>
-        </div>
-
-        <div class="page-intro reveal">Sign in to access your student portal.</div>
-
-        <div class="login-container box reveal" style="max-width:460px;margin:0 auto 44px auto;">
+            <p>Sign in to access your student portal.</p>
 
             <?php if ($message !== ""): ?>
-                <p class="login-message login-message--<?= $messageType ?>">
+                <div class="form-message form-message--<?= $messageType ?>">
                     <?= htmlspecialchars($message, ENT_QUOTES, "UTF-8") ?>
-                </p>
+                </div>
             <?php endif; ?>
 
             <form id="loginForm" method="POST" action="login.php">
 
-                <div class="form-group reveal">
+                <div class="form-group">
                     <label for="studentID">Student ID <span>*</span></label>
                     <input
                         type="text"
                         id="studentID"
                         name="studentID"
-                        placeholder="Example: 24CE001"
+                        placeholder="Example: 25CE015"
                         autocomplete="username"
                         required>
                 </div>
 
-                <div class="form-group reveal">
+                <div class="form-group">
                     <label for="studentpass">Password <span>*</span></label>
                     <input
                         type="password"
@@ -267,7 +249,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         required>
                 </div>
 
-                <div class="login-options reveal" style="display:flex;align-items:center;gap:10px;color:var(--text-muted);font-size:0.9rem;">
+                <div class="form-group" style="display:flex;align-items:center;gap:10px;color:var(--ink-secondary);font-size:0.88rem;">
                     <label class="remember" style="display:flex;align-items:center;gap:8px;cursor:pointer;">
                         <input type="checkbox" name="remember">
                         <span>Remember me</span>
@@ -275,19 +257,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <a href="#" style="color:var(--accent);margin-left:auto;">Forgot Password?</a>
                 </div>
 
-                <div class="submit-section reveal" style="margin-top:8px;">
-                    <button type="submit" class="btn btn--accent">Login</button>
-                    <button type="button" class="btn btn--ghost" onclick="window.location.href='role.php'">Sign up</button>
+                <div class="btn-group" style="margin-top:10px;">
+                    <button type="submit" class="btn btn--accent">Sign in</button>
+                    <button type="button" class="btn btn--ghost" onclick="window.location.href='role.php'">Create account</button>
                 </div>
 
             </form>
 
         </div>
 
-    </main>
+    </div>
 
     <footer>
-        <h1>© 2026 CHARUSAT University &nbsp;|&nbsp; Student Portal</h1>
+        <p>&copy; 2026 CHARUSAT University &bull; Student Portal</p>
     </footer>
 
     <script src="../js/login.js"></script>

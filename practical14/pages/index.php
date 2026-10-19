@@ -11,242 +11,223 @@ if ($_SESSION["role"] !== "student") {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Student HUB Portal | Dashboard</title>
+    <title>Dashboard | Student HUB Portal</title>
 
     <link rel="stylesheet" href="../css/style.css">
-
 </head>
 
 <body>
 
-    <!-- =========================================
-         HEADER
-    ========================================== -->
+    <div class="app-shell reveal">
 
-    <header class="header reveal">
-
-        <div class="header-inner reveal" style="animation-delay:0.05s">
-
-            <div class="logo reveal" style="animation-delay:0.1s">
-                <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                <span class="logo-wordmark">Student HUB</span>
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="logo">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
+                </div>
             </div>
-
-            <button id="menuBtn" class="menu-btn" aria-label="Open Menu">
-                ☰
-            </button>
-
-            <nav id="navbar">
-                <?= render_dynamic_menu("student") ?>
-            </nav>
-
-            <div class="logout-text reveal" style="animation-delay:0.2s">
-                <a href="logout.php">Logout</a>
+            <div class="topbar-center">
+                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                    <span class="kicker">Student Dashboard</span>
+                    <h1>Your semester, at a glance.</h1>
+                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                        Semester II &bull; Academic Year 2025&ndash;26
+                    </p>
+                </div>
             </div>
+            <div class="topbar-right">
+                <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+                    &#9788; Light Mode
+                </button>
+                <a href="logout.php" class="btn btn--ghost">Sign out</a>
+            </div>
+        </header>
 
-        </div>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-brand">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span>Student <strong>HUB</strong></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <?= render_dynamic_menu("student") ?>
+                    </ul>
+                </nav>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-footer">
+                    <p>Signed in as student</p>
+                    <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+                </div>
+            </div>
+        </aside>
 
-    </header>
+        <!-- Main -->
+        <main class="main reveal" style="animation-delay:0.1s">
+            <div class="main-inner">
 
-    <div id="notification" class="notification reveal" style="animation-delay:0.25s">
-        <span><strong>🔔</strong> Welcome back to Student HUB Portal</span>
-        <button id="closeNotification" aria-label="Close notification">✕</button>
+                <!-- Page header -->
+                <div class="page-header">
+                    <div class="kicker">Overview</div>
+                    <h1>Dashboard</h1>
+                    <p>Track attendance, assignments, timetable, and notices in one place.</p>
+                </div>
+
+                <!-- Metric summary -->
+                <div class="metric-grid reveal" style="animation-delay:0.2s">
+                    <div class="metric metric--accent">
+                        <div class="metric-label">Overall Attendance</div>
+                        <div class="metric-value">85%</div>
+                        <div class="metric-context">25 of 29 classes attended</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Semester SGPA</div>
+                        <div class="metric-value">7.95</div>
+                        <div class="metric-context">Semester II &bull; 2025&ndash;26</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Pending Assignments</div>
+                        <div class="metric-value">2</div>
+                        <div class="metric-context">Due within 7 days</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Upcoming Exams</div>
+                        <div class="metric-value">1</div>
+                        <div class="metric-context">Java &bull; Monday</div>
+                    </div>
+                </div>
+
+                <div class="content-grid content-grid--two reveal" style="animation-delay:0.3s">
+
+                    <!-- Primary column -->
+                    <div class="panel">
+                        <h2>Attendance</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th class="numeric">Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Computer Network</td>
+                                    <td class="numeric"><span class="status status--success">85%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Java Programming</td>
+                                    <td class="numeric"><span class="status status--success">90%</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Web Development</td>
+                                    <td class="numeric"><span class="status status--warning">80%</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="progress" style="margin-top:16px;">
+                            <div class="progress-bar" style="width:85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>Assignments</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Assignment</th>
+                                    <th>Due Date</th>
+                                    <th class="numeric">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Mathematics &mdash; Assignment 1</td>
+                                    <td>20 Aug 2026</td>
+                                    <td class="numeric"><span class="status status--warning">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Computer Engineering &mdash; Assignment 2</td>
+                                    <td>22 Aug 2026</td>
+                                    <td class="numeric"><span class="status status--success">Submitted</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Physics &mdash; Assignment 3</td>
+                                    <td>25 Aug 2026</td>
+                                    <td class="numeric"><span class="status status--warning">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Secondary column -->
+                <div class="content-grid content-grid--two reveal" style="animation-delay:0.4s">
+
+                    <div class="panel">
+                        <h2>Today's Timetable</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Course</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="numeric">9:10 AM</td>
+                                    <td>Computer Network</td>
+                                    <td>Room 204</td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric">10:20 AM</td>
+                                    <td>Java Programming</td>
+                                    <td>Lab 3</td>
+                                </tr>
+                                <tr>
+                                    <td class="numeric">11:30 AM</td>
+                                    <td>Web Development</td>
+                                    <td>Room 108</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="panel">
+                        <h2>Notices</h2>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+                                <div style="font-weight:600;color:var(--ink);">Java Examination</div>
+                                <div style="font-size:0.85rem;color:var(--ink-muted);">Java Programming examination on Monday.</div>
+                            </div>
+                            <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+                                <div style="font-weight:600;color:var(--ink);">Network Assignment Due</div>
+                                <div style="font-size:0.85rem;color:var(--ink-muted);">Submit before Friday.</div>
+                            </div>
+                            <div style="padding:12px 0;">
+                                <div style="font-weight:600;color:var(--ink);">WDF Practical Submission</div>
+                                <div style="font-size:0.85rem;color:var(--ink-muted);">Next week &mdash; Student HUB Portal.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </main>
+
     </div>
 
-    <main>
-
-        <div class="page-title-wrap reveal">
-            <h1>Welcome back.</h1>
-            <span class="tag">STUDENT DASHBOARD</span>
-        </div>
-
-        <div class="page-intro reveal">
-            Your semester at a glance — timetable, attendance, fees,
-            results, and the latest announcements.
-        </div>
-
-        <div class="top-buttons reveal" style="animation-delay:0.3s">
-            <div class="btn-group">
-                <button id="themeBtn" class="theme-toggle">
-                    ☀️ Light Mode
-                </button>
-                <button id="openModal" class="btn btn--accent">
-                    👤 Student Information
-                </button>
-            </div>
-        </div>
-
-        <div class="dashboard-grid reveal">
-
-            <!-- TIME TABLE -->
-            <section>
-                <div class="box">
-                    <h2>Time Table</h2>
-                    <table>
-                        <tr>
-                            <th>Time</th>
-                            <th>Course</th>
-                        </tr>
-                        <tr>
-                            <td>9:10 AM</td>
-                            <td>Network</td>
-                        </tr>
-                        <tr>
-                            <td>10:20 AM</td>
-                            <td>Java Programming</td>
-                        </tr>
-                        <tr>
-                            <td>11:30 AM</td>
-                            <td>WDF</td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-
-            <section>
-                <div class="box">
-                    <h2>Attendance</h2>
-                    <table>
-                        <tr>
-                            <th>Course</th>
-                            <th>Attendance</th>
-                        </tr>
-                        <tr>
-                            <td>Network</td>
-                            <td><span class="status status--paid">85%</span></td>
-                        </tr>
-                        <tr>
-                            <td>Java</td>
-                            <td><span class="status status--paid">90%</span></td>
-                        </tr>
-                        <tr>
-                            <td>WDF</td>
-                            <td><span class="status status--pending">80%</span></td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-
-            <section>
-                <div class="box">
-                    <h2>Fees Details</h2>
-                    <table>
-                        <tr>
-                            <th>Semester</th>
-                            <th>Status</th>
-                        </tr>
-                        <tr>
-                            <td>Semester 1</td>
-                            <td><span class="status status--paid">Paid</span></td>
-                        </tr>
-                        <tr>
-                            <td>Semester 2</td>
-                            <td><span class="status status--paid">Paid</span></td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-
-            <section>
-                <div class="box">
-                    <h2>University Result</h2>
-                    <table>
-                        <tr>
-                            <th>Semester</th>
-                            <th>SGPA</th>
-                        </tr>
-                        <tr>
-                            <td>Semester 1</td>
-                            <td>7.26</td>
-                        </tr>
-                        <tr>
-                            <td>Semester 2</td>
-                            <td>7.95</td>
-                        </tr>
-                    </table>
-                </div>
-            </section>
-
-        </div>
-
-
-        <section class="slider-section reveal">
-            <h2>📢 Announcements</h2>
-            <div class="slider">
-                <button id="prevBtn" aria-label="Previous announcement">❮</button>
-                <div class="slide">
-                    <h3 id="slideTitle">Java Exam</h3>
-                    <p id="slideText">Java Programming examination will be conducted on Monday.</p>
-                </div>
-                <button id="nextBtn" aria-label="Next announcement">❯</button>
-            </div>
-        </section>
-
-
-        <section class="faq-section reveal">
-            <h2>❓ Frequently Asked Questions</h2>
-
-            <div class="faq">
-                <button class="faq-question">
-                    <span>How can I check my attendance?</span>
-                    <span>+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Go to the Attendance section from the navigation menu.</p>
-                </div>
-            </div>
-
-            <div class="faq">
-                <button class="faq-question">
-                    <span>How can I check my result?</span>
-                    <span>+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Click on the Result option in the navigation menu.</p>
-                </div>
-            </div>
-
-            <div class="faq">
-                <button class="faq-question">
-                    <span>How can I check my courses?</span>
-                    <span>+</span>
-                </button>
-                <div class="faq-answer">
-                    <p>Click on Courses to view all registered courses.</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-
-    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-
-        <div class="modal-content">
-
-            <button id="closeModal" class="close-modal" aria-label="Close">✕</button>
-
-            <h2 id="modalTitle">Student Information</h2>
-
-            <p><strong>Name:</strong> <span id="studentName">Loading…</span></p>
-            <p><strong>Course:</strong> <span id="studentCourse">Loading…</span></p>
-            <p><strong>University:</strong> <span id="studentUniversity">Loading…</span></p>
-            <p><strong>Semester:</strong> <span id="studentSemester">Loading…</span></p>
-            <p><strong>Email:</strong> <span id="studentEmail">Loading…</span></p>
-            <p><strong>Mobile:</strong> <span id="studentMobile">Loading…</span></p>
-
-        </div>
-    </div>
-
-
-    <footer>
-        <h1>@2026 Student HUB Portal</h1>
+    <footer reveal>
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
-
 
     <script src="../js/index.js"></script>
     <script src="../js/json-test.js"></script>

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/session_check.php";
-require_once __DIR__ . "/menu.php";
 require_once __DIR__ . "/db.php";
+require_once __DIR__ . "/menu.php";
 
 if ($_SESSION["role"] !== "student") {
     http_response_code(403);
@@ -21,122 +21,133 @@ if (!$student) {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Profile | Student HUB Portal</title>
 
-    <link
-        rel="stylesheet"
-        href="../css/style.css">
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
-
 
 <body>
 
-    <!-- Header -->
+    <div class="app-shell reveal">
 
-    <header class="header reveal">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="logo">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
+                </div>
+            </div>
+            <div class="topbar-center">
+                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                    <span class="kicker">Profile</span>
+                    <h1>Student Profile</h1>
+                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                        Academic record and personal details
+                    </p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <a href="logout.php" class="btn btn--ghost">Sign out</a>
+            </div>
+        </header>
 
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-brand">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span>Student <strong>HUB</strong></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <?= render_dynamic_menu("student") ?>
+                    </ul>
+                </nav>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-footer">
+                    <p>Signed in as student</p>
+                    <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+                </div>
+            </div>
+        </aside>
 
-        <div class="header-inner reveal" style="animation-delay:0.05s">
+        <main class="main reveal" style="animation-delay:0.1s">
+            <div class="main-inner">
 
+                <div class="page-header">
+                    <div class="kicker">Academic Record</div>
+                    <h1>Profile</h1>
+                    <p>Your enrolment details and contact information.</p>
+                </div>
 
-            <div class="logo reveal" style="animation-delay:0.1s">
-
-                <img
-                    src="../images/charusat.png"
-                    alt="CHARUSAT Logo">
+                <div class="content-grid reveal" style="animation-delay:0.2s">
+                    <div class="panel">
+                        <h2>Student Information</h2>
+                        <table class="data-table">
+                            <tbody>
+                                <tr>
+                                    <td style="width:38%;color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        Student ID
+                                    </td>
+                                    <td style="font-family:var(--font-mono);">
+                                        <?= htmlspecialchars($student['student_id']) ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        Full Name
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($student['full_name']) ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        Email
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($student['email']) ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        Mobile
+                                    </td>
+                                    <td style="font-family:var(--font-mono);">
+                                        <?= htmlspecialchars($student['mobile']) ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        Course
+                                    </td>
+                                    <td>
+                                        <?= htmlspecialchars($student['course']) ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:var(--ink-secondary);font-family:var(--font-mono);font-size:0.85rem;text-transform:uppercase;letter-spacing:0.06em;">
+                                        University
+                                    </td>
+                                    <td>CHARUSAT</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
+        </main>
 
+    </div>
 
-            <!-- Navigation -->
+    <footer>
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
+    </footer>
 
-            <nav id="navbar">
-                <?= render_dynamic_menu("student") ?>
-            </nav>
-
-
-            <!-- Login -->
-
-            <div class="logout-text reveal" style="animation-delay:0.2s">
-
-                <a href="logout.php">
-                    Logout
-                </a>
-
-            </div>
-
-
-        </div>
-
-
-    </header>
-
-    <!-- Profile Section -->
-
-    <main>
-
-        <div class="page-title-wrap reveal">
-            <h1>Student Profile</h1>
-            <span class="tag">ACCOUNT DETAILS</span>
-        </div>
-
-        <div class="profile-card box reveal" style="max-width:560px;margin:0 auto 44px auto;text-align:center;">
-
-            <img
-                src="profile.png"
-                alt="Student Photo"
-                class="profile-img"
-                style="width:110px;height:110px;border-radius:50%;object-fit:cover;border:2px solid var(--border-focus);margin:0 auto 16px auto;display:block;box-shadow:0 0 24px var(--accent-glow);">
-
-            <div class="profile-info">
-
-                <h2>
-                    <?= htmlspecialchars($student['full_name']) ?>
-                </h2>
-
-                <p>
-                    <strong>Roll No:</strong>
-                    <span style="font-family:var(--font-mono);color:var(--accent);">
-                        <?= htmlspecialchars($student['student_id']) ?>
-                    </span>
-                </p>
-
-
-                <p>
-                    <strong>Department:</strong> CSPIT
-                </p>
-
-
-                <p>
-                    <strong>Year:</strong> II Year
-                </p>
-
-
-                <p>
-                    <strong>Email:</strong>
-                    <?= htmlspecialchars($student['email']) ?>
-                </p>
-
-
-                <p>
-                    <strong>Phone:</strong>
-                    <span style="font-family:var(--font-mono);">
-                        <?= htmlspecialchars($student['mobile']) ?>
-                    </span>
-                </p>
-
-            </div>
-
-        </div>
-
-    </main>
+    <script src="../js/index.js"></script>
 
 </body>
 

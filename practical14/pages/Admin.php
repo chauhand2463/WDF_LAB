@@ -1,15 +1,13 @@
-
 <?php
 require_once __DIR__ . "/session_check.php";
 require_once __DIR__ . "/menu.php";
+require_once __DIR__ . "/../db.php";
+require_once __DIR__ . "/../audit.php";
 
 if (($_SESSION["role"] ?? "") !== "admin") {
     http_response_code(403);
     exit("Unauthorized access.");
 }
-
-require_once __DIR__ . "/../db.php";
-require_once __DIR__ . "/../audit.php";
 
 if (!isset($conn) || !($conn instanceof PDO)) {
     exit("Database connection failed.");
@@ -109,213 +107,206 @@ function h($value): string
     <title>Admin Dashboard | Student HUB</title>
 
     <link rel="stylesheet" href="../css/style.css">
-
 </head>
 
 <body>
 
-    <header class="header reveal">
+    <div class="app-shell reveal">
 
-        <div class="header-inner reveal" style="animation-delay:0.05s">
-
-            <div class="logo reveal" style="animation-delay:0.1s">
-                <img src="../images/charusat.png" alt="CHARUSAT Logo">
-            </div>
-
-            <button
-                id="menuBtn"
-                class="menu-btn"
-                type="button"
-                aria-label="Open Menu"
-                aria-expanded="false">
-                ☰
-            </button>
-
-            <nav id="navbar">
-                <?php foreach (build_dynamic_menu("admin") as $item): ?>
-                    <a href="<?= h($item["href"]) ?>"
-                       <?= $item["label"] === "Dashboard" ? 'aria-current="page"' : "" ?>>
-                        <?= h($item["label"]) ?>
-                    </a>
-                <?php endforeach; ?>
-            </nav>
-
-        </div>
-
-    </header>
-
-    <main class="admin-dashboard reveal">
-
-        <section class="admin-welcome reveal">
-            <h1>Welcome, <?= h($adminName) ?></h1>
-            <span class="tag">ADMINISTRATION CONSOLE</span>
-            <p>
-                Role-based administration console. Menu options are generated from
-                your <strong><?= h($_SESSION["role"]) ?></strong> role and all
-                administrative actions are recorded in the audit log.
-            </p>
-        </section>
-
-        <?php if ($dbMessage !== ""): ?>
-            <p class="login-message login-message--error" role="status" style="max-width:1100px;margin:0 auto 24px auto;text-align:left;">
-                <?= h($dbMessage) ?>
-            </p>
-        <?php endif; ?>
-
-        <section aria-labelledby="overviewTitle" class="reveal" style="animation-delay:0.15s;">
-            <h2 id="overviewTitle">Dashboard Overview</h2>
-
-            <div class="admin-stats reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin:25px 0;">
-
-                <article class="admin-card card reveal">
-                    <h2>Students</h2>
-                    <p class="admin-number"><?= number_format($totalStudents) ?></p>
-                    <p>Accounts with the student role.</p>
-                </article>
-
-                <article class="admin-card card reveal">
-                    <h2>Administrators</h2>
-                    <p class="admin-number"><?= number_format($totalAdmins) ?></p>
-                    <p>Accounts with the admin role.</p>
-                </article>
-
-                <article class="admin-card card reveal">
-                    <h2>Total Events</h2>
-                    <p class="admin-number"><?= number_format($totalEvents) ?></p>
-                    <p><?= number_format($openEvents) ?> currently open.</p>
-                </article>
-
-                <article class="admin-card card reveal">
-                    <h2>Registrations</h2>
-                    <p class="admin-number"><?= number_format($totalRegistrations) ?></p>
-                    <p>Total event registrations.</p>
-                </article>
-
-            </div>
-        </section>
-
-        <section aria-labelledby="actionsTitle" class="reveal" style="animation-delay:0.25s;">
-            <h2 id="actionsTitle">Administration Tools</h2>
-
-            <div class="admin-actions reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:20px;">
-
-                <a class="admin-action btn btn--ghost reveal" href="adminpages/manage_students.php" style="padding:24px;text-align:left;display:block;">
-                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Manage Students</h2>
-                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Add, view, edit, delete, search, and filter student records.</p>
-                    <strong style="color:var(--accent);">Open Student Management →</strong>
-                </a>
-
-                <a class="admin-action btn btn--ghost reveal" href="adminpages/events.php" style="padding:24px;text-align:left;display:block;">
-                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Manage Events</h2>
-                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Create events, upload posters and control event status.</p>
-                    <strong style="color:var(--accent);">Open Events →</strong>
-                </a>
-
-                <a class="admin-action btn btn--ghost reveal" href="ajax_crud.php" style="padding:24px;text-align:left;display:block;">
-                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">AJAX CRUD</h2>
-                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Manage students and events asynchronously via the JSON API.</p>
-                    <strong style="color:var(--accent);">Open AJAX CRUD →</strong>
-                </a>
-
-                <a class="admin-action btn btn--ghost reveal" href="adminpages/audit_logs.php" style="padding:24px;text-align:left;display:block;">
-                    <h2 style="margin:0 0 6px 0;font-family:var(--font-display);">Audit Log</h2>
-                    <p style="margin:0 0 8px 0;color:var(--text-muted);">Review the trail of important administrative actions.</p>
-                    <strong style="color:var(--accent);">View Audit Log →</strong>
-                </a>
-
-            </div>
-        </section>
-
-        <div class="admin-panels reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:25px;animation-delay:0.35s;">
-
-            <section class="admin-card card reveal" aria-labelledby="latestRegTitle">
-                <h2 id="latestRegTitle">Latest Registrations</h2>
-
-                <?php if ($latestRegistrations): ?>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Event</th>
-                                <th>Registered</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($latestRegistrations as $reg): ?>
-                            <tr>
-                                <td>
-                                    <?= h($reg["full_name"]) ?>
-                                    <br>
-                                    <small style="font-family:var(--font-mono);color:var(--text-muted);"><?= h($reg["student_id"]) ?></small>
-                                </td>
-                                <td><?= h($reg["event_name"]) ?></td>
-                                <td><?= h($reg["registered_at"]) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p class="panel-empty">No registrations yet.</p>
-                <?php endif; ?>
-            </section>
-
-            <section class="admin-card card reveal" aria-labelledby="recentLogsTitle">
-                <h2 id="recentLogsTitle">Recent Audit Activity</h2>
-
-                <?php if ($recentLogs): ?>
-                    <ul class="activity-list">
-                    <?php foreach ($recentLogs as $log): ?>
-                        <li>
-                            <span class="activity-action"><?= h($log["action"]) ?></span>
-                            <?php if (!empty($log["entity"])): ?>
-                                — <?= h($log["entity"]) ?>
-                                <?= h($log["entity_id"]) ?>
-                            <?php endif; ?>
-                            <br>
-                            <span class="activity-time">
-                                <?= h($log["student_id"] ?? "system") ?>
-                                (<?= h($log["role"] ?? "-") ?>)
-                                · <?= h($log["created_at"]) ?>
-                            </span>
-                        </li>
-                    <?php endforeach; ?>
-                    </ul>
-                <?php else: ?>
-                    <p class="panel-empty">No audit entries yet.</p>
-                <?php endif; ?>
-            </section>
-
-        </div>
-
-        <section class="admin-card card reveal" aria-labelledby="chartTitle" style="margin-top:20px;animation-delay:0.45s;">
-            <h2 id="chartTitle">Event Registrations by Month</h2>
-
-            <?php if ($monthlyRegistrations): ?>
-                <div class="chart">
-                <?php foreach ($monthlyRegistrations as $month):
-                    $total = (int) $month["total"];
-                    $height = $maxMonthly > 0
-                        ? max(4, (int) round(($total / $maxMonthly) * 100))
-                        : 4;
-                ?>
-                    <div class="chart-bar">
-                        <span class="chart-value"><?= number_format($total) ?></span>
-                        <div class="chart-fill" style="height: <?= $height ?>%;"></div>
-                        <span class="chart-label"><?= h($month["label"]) ?></span>
-                    </div>
-                <?php endforeach; ?>
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="logo">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
                 </div>
-            <?php else: ?>
-                <p class="panel-empty">No registration data to chart yet.</p>
-            <?php endif; ?>
-        </section>
+            </div>
+            <div class="topbar-center">
+                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                    <span class="kicker">Administration</span>
+                    <h1>Admin Dashboard</h1>
+                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                        Role-based administration console &mdash; all actions are recorded in the audit log
+                    </p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <a href="logout.php" class="btn btn--ghost">Sign out</a>
+            </div>
+        </header>
 
-    </main>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-brand">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span>Student <strong>HUB</strong></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <?php foreach (build_dynamic_menu("admin") as $item): ?>
+                            <li><a href="<?= h($item["href"]) ?>" <?= $item["label"] === "Dashboard" ? 'aria-current="page"' : "" ?>><?= h($item["label"]) ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </nav>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-footer">
+                    <p>Signed in as administrator</p>
+                    <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main reveal" style="animation-delay:0.1s">
+            <div class="main-inner">
+
+                <div class="page-header">
+                    <div class="kicker">Dashboard Overview</div>
+                    <h1>Welcome, <?= h($adminName) ?></h1>
+                    <p>Role-based administration console. Menu options are generated from your role.</p>
+                </div>
+
+                <?php if ($dbMessage !== ""): ?>
+                    <div class="form-message form-message--error reveal" style="max-width:640px;margin-bottom:24px;text-align:left;">
+                        <?= h($dbMessage) ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Metric summary -->
+                <div class="metric-grid reveal" style="animation-delay:0.2s">
+                    <div class="metric metric--accent">
+                        <div class="metric-label">Students</div>
+                        <div class="metric-value"><?= number_format($totalStudents) ?></div>
+                        <div class="metric-context">Accounts with the student role.</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Administrators</div>
+                        <div class="metric-value"><?= number_format($totalAdmins) ?></div>
+                        <div class="metric-context">Accounts with the admin role.</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Total Events</div>
+                        <div class="metric-value"><?= number_format($totalEvents) ?></div>
+                        <div class="metric-context"><?= number_format($openEvents) ?> currently open.</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Registrations</div>
+                        <div class="metric-value"><?= number_format($totalRegistrations) ?></div>
+                        <div class="metric-context">Total event registrations.</div>
+                    </div>
+                </div>
+
+                <!-- Administration tools -->
+                <div class="section reveal" style="animation-delay:0.3s">
+                    <h2>Administration Tools</h2>
+                    <div class="content-grid content-grid--two" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+                        <a class="admin-action panel btn--ghost" href="adminpages/manage_students.php" style="text-decoration:none;color:inherit;display:block;">
+                            <h3 style="margin:0 0 8px 0;font-family:var(--font-heading);font-size:1.15rem;">Manage Students</h3>
+                            <p style="margin:0;color:var(--ink-secondary);font-size:0.9rem;">Add, view, edit, delete, search, and filter student records.</p>
+                        </a>
+                        <a class="admin-action panel btn--ghost" href="adminpages/events.php" style="text-decoration:none;color:inherit;display:block;">
+                            <h3 style="margin:0 0 8px 0;font-family:var(--font-heading);font-size:1.15rem;">Manage Events</h3>
+                            <p style="margin:0;color:var(--ink-secondary);font-size:0.9rem;">Create events and control event status.</p>
+                        </a>
+                        <a class="admin-action panel btn--ghost" href="ajax_crud.php" style="text-decoration:none;color:inherit;display:block;">
+                            <h3 style="margin:0 0 8px 0;font-family:var(--font-heading);font-size:1.15rem;">AJAX CRUD</h3>
+                            <p style="margin:0;color:var(--ink-secondary);font-size:0.9rem;">Manage students and events asynchronously via the JSON API.</p>
+                        </a>
+                        <a class="admin-action panel btn--ghost" href="adminpages/audit_logs.php" style="text-decoration:none;color:inherit;display:block;">
+                            <h3 style="margin:0 0 8px 0;font-family:var(--font-heading);font-size:1.15rem;">Audit Log</h3>
+                            <p style="margin:0;color:var(--ink-secondary);font-size:0.9rem;">Review the trail of important administrative actions.</p>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Latest registrations + recent audit -->
+                <div class="content-grid content-grid--two reveal" style="animation-delay:0.4s">
+                    <div class="panel">
+                        <h2>Latest Registrations</h2>
+                        <?php if ($latestRegistrations): ?>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student</th>
+                                        <th>Event</th>
+                                        <th class="numeric">Registered</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($latestRegistrations as $reg): ?>
+                                    <tr>
+                                        <td>
+                                            <div style="font-family:var(--font-mono);font-size:0.85rem;"><?= h($reg["student_id"]) ?></div>
+                                            <?= h($reg["full_name"]) ?>
+                                        </td>
+                                        <td><?= h($reg["event_name"]) ?></td>
+                                        <td class="numeric" style="font-family:var(--font-mono);font-size:0.85rem;"><?= h($reg["registered_at"]) ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="empty-state">
+                                <h3>No registrations yet</h3>
+                                <p>No event registrations have been recorded.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="panel">
+                        <h2>Recent Audit Activity</h2>
+                        <?php if ($recentLogs): ?>
+                            <ul style="list-style:none;padding:0;margin:0;">
+                            <?php foreach ($recentLogs as $log): ?>
+                                <li style="padding:10px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">
+                                    <span style="font-weight:600;color:var(--accent);font-family:var(--font-mono);font-size:0.85rem;"><?= h($log["action"]) ?></span>
+                                    <?php if (!empty($log["entity"])): ?>
+                                        <span style="color:var(--ink-secondary);"> — <?= h($log["entity"]) ?> <?= h($log["entity_id"]) ?></span>
+                                    <?php endif; ?>
+                                    <div style="font-size:0.8rem;color:var(--ink-muted);font-family:var(--font-mono);margin-top:4px;">
+                                        <?= h($log["student_id"] ?? "system") ?> (<?= h($log["role"] ?? "-") ?>) · <?= h($log["created_at"]) ?>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <div class="empty-state" style="padding:24px 0;">
+                                <h3 style="font-size:1rem;">No audit entries yet</h3>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Registrations by month chart -->
+                <div class="panel reveal" style="animation-delay:0.5s;">
+                    <h2>Event Registrations by Month</h2>
+                    <?php if ($monthlyRegistrations): ?>
+                        <div class="chart" style="height:140px;padding-top:18px;display:flex;align-items:flex-end;gap:14px;">
+                        <?php foreach ($monthlyRegistrations as $month):
+                            $total = (int) $month["total"];
+                            $height = $maxMonthly > 0
+                                ? max(4, (int) round(($total / $maxMonthly) * 100))
+                                : 4;
+                        ?>
+                            <div class="chart-bar" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:6px;">
+                                <span class="chart-value" style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:var(--ink);"><?= number_format($total) ?></span>
+                                <div class="chart-fill" style="width:100%;background:linear-gradient(180deg,var(--accent),var(--accent-hover));border-radius:6px 6px 0 0;min-height:4px;height:<?= $height ?>%;"></div>
+                                <span class="chart-label" style="font-size:0.78rem;color:var(--ink-muted);text-align:center;line-height:1.2;"><?= h($month["label"]) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="empty-state" style="padding:24px 0;">
+                            <h3 style="font-size:1rem;">No registration data to chart yet</h3>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
 
     <footer>
-        <p style="text-align: center;">
-            &copy; 2026 Student HUB Portal
-        </p>
+        <p style="text-align:center;">&copy; 2026 Student HUB Portal</p>
     </footer>
 
     <script src="../js/index.js"></script>

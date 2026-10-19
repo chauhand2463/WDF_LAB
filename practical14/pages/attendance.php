@@ -11,136 +11,109 @@ if ($_SESSION["role"] !== "student") {
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Attendance | Student HUB Portal</title>
 
-    <link
-        rel="stylesheet"
-        href="../css/style.css">
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
-
 
 <body>
 
-    <!-- Header -->
+    <div class="app-shell reveal">
 
-    <header class="header reveal">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="logo">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
+                </div>
+            </div>
+            <div class="topbar-center">
+                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                    <span class="kicker">Attendance</span>
+                    <h1>Class Attendance</h1>
+                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                        Track your attendance across registered courses
+                    </p>
+                </div>
+            </div>
+            <div class="topbar-right">
+                <a href="logout.php" class="btn btn--ghost">Sign out</a>
+            </div>
+        </header>
 
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-brand">
+                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                    <span>Student <strong>HUB</strong></span>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul class="nav-list">
+                        <?= render_dynamic_menu("student") ?>
+                    </ul>
+                </nav>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-footer">
+                    <p>Signed in as student</p>
+                    <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+                </div>
+            </div>
+        </aside>
 
-        <div class="header-inner reveal" style="animation-delay:0.05s">
+        <main class="main reveal" style="animation-delay:0.1s">
+            <div class="main-inner">
 
+                <div class="page-header">
+                    <div class="kicker">Attendance Records</div>
+                    <h1>Attendance</h1>
+                    <p>View your attendance percentage by subject this semester.</p>
+                </div>
 
-            <div class="logo reveal" style="animation-delay:0.1s">
-
-                <img
-                    src="../images/charusat.png"
-                    alt="CHARUSAT Logo">
+                <div class="content-grid reveal" style="animation-delay:0.2s">
+                    <div class="panel">
+                        <h2>Subject-wise Attendance</h2>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th class="numeric">Attendance</th>
+                                    <th class="numeric">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Computer Network</td>
+                                    <td class="numeric">85%</td>
+                                    <td class="numeric"><span class="status status--success">Good</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Java Programming</td>
+                                    <td class="numeric">90%</td>
+                                    <td class="numeric"><span class="status status--success">Good</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Web Development</td>
+                                    <td class="numeric">80%</td>
+                                    <td class="numeric"><span class="status status--warning">Watch</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
+        </main>
 
+    </div>
 
-            <!-- Navigation -->
+    <footer>
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
+    </footer>
 
-            <nav id="navbar">
-                <?= render_dynamic_menu("student") ?>
-            </nav>
-
-
-            <!-- Login -->
-
-            <div class="logout-text reveal" style="animation-delay:0.2s">
-
-                <a href="logout.php">
-                    Logout
-                </a>
-
-            </div>
-
-
-        </div>
-
-
-    </header>
-
-    <!-- Attendance -->
-
-    <main>
-
-        <div class="page-title-wrap reveal">
-            <h1>Attendance</h1>
-            <span class="tag">CLASS RECORDS</span>
-        </div>
-
-        <div class="page-intro reveal">Track your attendance across all registered courses this semester.</div>
-
-        <div class="box reveal" style="max-width:700px;margin:0 auto 44px auto;">
-
-            <table>
-
-                <tr>
-
-                    <th>
-                        Subject
-                    </th>
-
-                    <th>
-                        Attendance
-                    </th>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Computer Network
-                    </td>
-
-                    <td>
-                        <span class="status status--paid">85%</span>
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Java Programming
-                    </td>
-
-                    <td>
-                        <span class="status status--paid">90%</span>
-                    </td>
-
-                </tr>
-
-
-                <tr>
-
-                    <td>
-                        Web Development
-                    </td>
-
-                    <td>
-                        <span class="status status--pending">80%</span>
-                    </td>
-
-                </tr>
-
-            </table>
-
-
-        </div>
-
-    </main>
-
+    <script src="../js/index.js"></script>
 
 </body>
 
