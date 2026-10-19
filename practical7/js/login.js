@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         const idCheck =
-            /^[0-9]{2}[A-Z]{3}[0-9]{3}$/;
+            /^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/;
 
 
         if (!idCheck.test(studentID)) {

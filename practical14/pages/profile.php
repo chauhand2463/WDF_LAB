@@ -1,6 +1,7 @@
 <?php
-require_once "session_check.php";
-require_once "db.php";
+require_once __DIR__ . "/session_check.php";
+require_once __DIR__ . "/menu.php";
+require_once __DIR__ . "/db.php";
 
 if ($_SESSION["role"] !== "student") {
     http_response_code(403);
