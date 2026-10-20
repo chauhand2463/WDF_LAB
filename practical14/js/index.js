@@ -50,12 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (theme === "light") {
       document.body.classList.remove("dark");
       document.body.classList.add("light");
-      if (themeBtn) themeBtn.textContent = "\u263E Dark Mode";
+      if (themeBtn) themeBtn.innerHTML = "🌙 <span>Dark Mode</span>";
       localStorage.setItem("theme", "light");
     } else {
       document.body.classList.remove("light");
       document.body.classList.add("dark");
-      if (themeBtn) themeBtn.textContent = "☀ Light Mode";
+      if (themeBtn) themeBtn.innerHTML = "☀️ <span>Light Mode</span>";
       localStorage.setItem("theme", "dark");
     }
   }
