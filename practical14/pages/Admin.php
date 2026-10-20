@@ -129,6 +129,9 @@ function h($value): string
             </div>
         </div>
         <div class="topbar-right">
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+                &#9788; Light Mode
+            </button>
             <a href="logout.php" class="btn btn--ghost">Sign out</a>
         </div>
     </header>

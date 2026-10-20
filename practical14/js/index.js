@@ -62,8 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (savedTheme) {
     applyTheme(savedTheme);
-  } else {
+  } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
     applyTheme("dark");
+  } else {
+    applyTheme("light");
   }
 
   if (themeBtn) {
