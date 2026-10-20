@@ -20,27 +20,22 @@ if ($_SESSION["role"] !== "student") {
 <body>
 
     <!-- Topbar -->
+    <!-- Topbar -->
     <header class="topbar">
         <div class="topbar-left">
             <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
             <div class="logo">
                 <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+                <span class="logo-wordmark">Student <strong>HUB</strong> <span class="portal-tag">Student Portal</span></span>
             </div>
         </div>
         <div class="topbar-center">
-            <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-                <span class="kicker">Attendance</span>
-                <h1>Class Attendance</h1>
-                <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                    Track your attendance across registered courses
-                </p>
+            <div class="topbar-context-badge">
+                <span>Attendance Log &bull; 85% Overall</span>
             </div>
         </div>
         <div class="topbar-right">
-            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
-                &#9788; Light Mode
-            </button>
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">🌙 <span>Dark Mode</span></button>
             <a href="logout.php" class="btn btn--ghost">Sign out</a>
         </div>
     </header>
@@ -50,10 +45,6 @@ if ($_SESSION["role"] !== "student") {
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-inner">
-                <div class="sidebar-brand">
-                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                    <span>Student <strong>HUB</strong></span>
-                </div>
                 <nav class="sidebar-nav">
                     <ul class="nav-list">
                         <?= render_dynamic_menu("student") ?>

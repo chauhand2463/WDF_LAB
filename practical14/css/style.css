@@ -103,24 +103,30 @@ ul {
   min-height: calc(100vh - var(--topbar-height));
 }
 
+/* ==========================================================================
+   Topbar & Navigation Layout
+   ========================================================================== */
+
 .topbar {
   position: sticky;
   top: 0;
-  height: var(--topbar-height);
+  height: 64px;
+  max-height: 64px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
-  gap: 20px;
+  padding: 0 24px;
+  gap: 16px;
   z-index: 400;
+  box-sizing: border-box;
 }
 
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   flex-shrink: 0;
 }
 
@@ -133,6 +139,7 @@ ul {
 .logo img {
   width: 32px;
   height: 32px;
+  object-fit: contain;
 }
 
 .logo-wordmark {
@@ -141,10 +148,26 @@ ul {
   font-size: 1.25rem;
   letter-spacing: -0.02em;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .logo-wordmark strong {
   color: var(--accent);
+}
+
+.portal-tag {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid rgba(73, 107, 80, 0.25);
 }
 
 .topbar-center {
@@ -155,10 +178,28 @@ ul {
   min-width: 0;
 }
 
+.topbar-context-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+}
+
+.topbar-context-badge strong {
+  color: var(--ink);
+}
+
 .page-title-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   white-space: nowrap;
 }
 
@@ -181,16 +222,18 @@ ul {
   font-weight: 600;
   margin: 0;
   color: var(--ink);
+  line-height: 1;
 }
 
 .page-title-wrap p {
-  display: none;
+  display: none !important;
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-shrink: 0;
   margin-left: auto;
 }
 
@@ -211,7 +254,7 @@ ul {
 }
 
 .sidebar-brand {
-  display: none;
+  display: none !important;
 }
 
 .sidebar-nav {
@@ -223,7 +266,7 @@ ul {
 .sidebar-nav .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   padding: 0 10px;
   list-style: none;
   margin: 0;
@@ -246,10 +289,7 @@ ul {
   font-weight: 500;
   font-size: 0.92rem;
   text-decoration: none;
-  transition: background var(--duration-ui) var(--ease-ui),
-    color var(--duration-ui) var(--ease-ui),
-    transform var(--duration-ui) var(--ease-ui),
-    border-color var(--duration-ui) var(--ease-ui);
+  transition: all var(--duration-ui) var(--ease-ui);
   border: 1px solid transparent;
   cursor: pointer;
 }

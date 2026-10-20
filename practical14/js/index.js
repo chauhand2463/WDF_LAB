@@ -1,5 +1,4 @@
 
-// Restrained page-load reveals for dashboard content.
 function initReveals() {
   const revealTargets = document.querySelectorAll(
     "main .reveal, header .reveal, #notification, .metric, .panel, .section, .page-header"

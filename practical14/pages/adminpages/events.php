@@ -645,44 +645,33 @@ $totalClosed = (int)$stmt->fetchColumn();
 
 <body>
 
-<header class="topbar">
-    <div class="topbar-left">
-        <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
-        <div class="logo">
-            <img src="../../images/charusat.png" alt="CHARUSAT Logo">
-            <span class="logo-wordmark">Student <strong>HUB</strong></span>
+<!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+            <div class="logo">
+                <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong> <span class="portal-tag">Admin Console</span></span>
+            </div>
         </div>
-    </div>
-    <div class="topbar-center">
-        <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-            <span class="kicker">Administration</span>
-            <h1>Campus Events</h1>
-            <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                Event planning, registration rosters, and announcements
-            </p>
+        <div class="topbar-center">
+            <div class="topbar-context-badge">
+                <span>Event Management &bull; Campus Rosters</span>
+            </div>
         </div>
-    </div>
-    <div class="topbar-right">
-        <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
-            &#9788; Light Mode
-        </button>
-        <a href="../logout.php" class="btn btn--ghost">Sign out</a>
-    </div>
-</header>
+        <div class="topbar-right">
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">🌙 <span>Dark Mode</span></button>
+            <a href="../logout.php" class="btn btn--ghost">Sign out</a>
+        </div>
+    </header>
 
 <div class="app-shell reveal">
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-inner">
-            <div class="sidebar-brand">
-                <img src="../../images/charusat.png" alt="CHARUSAT Logo">
-                <span>Student <strong>HUB</strong></span>
-            </div>
             <nav class="sidebar-nav">
                 <ul class="nav-list">
-                    <?php foreach (build_dynamic_menu("admin", "../") as $item): ?>
-                        <li><a href="<?= e($item["href"]) ?>" <?= $item["label"] === "Manage Events" ? 'aria-current="page"' : "" ?>><?= e($item["label"]) ?></a></li>
-                    <?php endforeach; ?>
+                    <?= render_dynamic_menu("admin", "../") ?>
                 </ul>
             </nav>
             <div class="sidebar-divider"></div>
