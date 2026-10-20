@@ -1,6 +1,7 @@
 
 <?php
 require_once __DIR__ . "/../session_check.php";
+require_once __DIR__ . "/../menu.php";
 
 if (($_SESSION["role"] ?? "") !== "admin") {
     http_response_code(403);
@@ -358,32 +359,29 @@ try {
     <link rel="stylesheet" href="../../css/style.css">
 
     <style>
-        .crud-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-        }
-
         .crud-card {
-            background: #fff;
-            color: #222;
-            padding: 22px;
+            background: var(--surface);
+            color: var(--ink);
+            padding: 24px;
             margin-bottom: 24px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.10);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
         }
 
         .crud-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
+            gap: 16px;
         }
 
         .crud-form label,
         .search-form label {
             display: block;
             font-weight: 600;
+            font-size: 0.88rem;
             margin-bottom: 6px;
+            color: var(--ink);
         }
 
         .crud-form input,
@@ -391,86 +389,136 @@ try {
         .search-form select {
             box-sizing: border-box;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--ink);
+            font: inherit;
+        }
+
+        .crud-form input:focus,
+        .search-form input:focus,
+        .search-form select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
         .crud-btn {
-            display: inline-block;
-            padding: 10px 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             text-decoration: none;
-            font-size: 14px;
-            margin: 3px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all var(--duration-ui) var(--ease-ui);
+            margin: 2px;
         }
 
         .primary-btn {
-            background: #2563eb;
+            background: var(--accent);
             color: white;
         }
 
+        .primary-btn:hover {
+            background: var(--accent-hover);
+        }
+
         .edit-btn {
-            background: #eab308;
-            color: #111;
+            background: var(--surface-muted);
+            color: var(--ink);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .edit-btn:hover {
+            border-color: var(--ink-secondary);
         }
 
         .delete-btn {
-            background: #dc2626;
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(168, 67, 59, 0.3);
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
             color: white;
         }
 
         .cancel-btn {
-            background: #e5e7eb;
-            color: #111;
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            border: 1px solid var(--border);
         }
 
         .message {
-            padding: 12px;
-            border-radius: 7px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
             margin: 15px 0;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .success {
-            background: #d1fae5;
-            color: #065f46;
+            background: var(--accent-soft);
+            color: var(--success);
+            border: 1px solid var(--border);
         }
 
         .error {
-            background: #fee2e2;
-            color: #991b1b;
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(168, 67, 59, 0.25);
         }
 
         .search-form {
             display: grid;
             grid-template-columns: 2fr 1fr auto auto;
-            gap: 12px;
+            gap: 14px;
             align-items: end;
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-top: 14px;
         }
 
         .student-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 800px;
+            font-size: 0.9rem;
         }
 
         .student-table th,
         .student-table td {
-            padding: 12px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--border);
         }
 
         .student-table th {
-            background: #f3f4f6;
-            color: #111;
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .student-table tr:last-child td {
+            border-bottom: none;
         }
 
         .crud-header {
@@ -479,52 +527,63 @@ try {
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-        }
-
-        @media (max-width: 700px) {
-            .crud-container {
-                padding: 10px;
-            }
-
-            .crud-card {
-                padding: 14px;
-            }
-
-            .search-form {
-                grid-template-columns: 1fr;
-            }
+            margin-bottom: 20px;
         }
     </style>
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+        <div class="logo">
+            <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+            <span class="logo-wordmark">Student <strong>HUB</strong></span>
+        </div>
     </div>
-
-    <button id="menuBtn"
-            class="menu-btn"
-            type="button"
-            aria-label="Open Menu"
-            aria-expanded="false">
-        ☰
-    </button>
-
-    <nav id="navbar">
-        <ul>
-            <li><a href="../Admin.php">Dashboard</a></li>
-            <li><a href="manage_students.php">Manage Students</a></li>
-            <li><a href="events.php">Manage Events</a></li>
-            <li><a href="../ajax_crud.php">AJAX CRUD</a></li>
-            <li><a href="audit_logs.php">Audit Log</a></li>
-            <li><a href="../logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <div class="topbar-center">
+        <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+            <span class="kicker">Administration</span>
+            <h1>Student Management</h1>
+            <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                Student database directory &bull; Enrolled student records
+            </p>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+            &#9788; Light Mode
+        </button>
+        <a href="../logout.php" class="btn btn--ghost">Sign out</a>
+    </div>
 </header>
 
-<main class="crud-container">
+<div class="app-shell reveal">
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand">
+                <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+                <span>Student <strong>HUB</strong></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <?php foreach (build_dynamic_menu("admin", "../") as $item): ?>
+                        <li><a href="<?= e($item["href"]) ?>" <?= $item["label"] === "Manage Students" ? 'aria-current="page"' : "" ?>><?= e($item["label"]) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-footer">
+                <p>Signed in as administrator</p>
+                <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main reveal" style="animation-delay:0.1s">
+        <div class="main-inner">
 
     <div class="crud-header">
         <div>
@@ -726,10 +785,12 @@ try {
         </div>
     </section>
 
-</main>
+        </div>
+    </main>
+</div>
 
 <footer>
-    <p style="text-align:center;">&copy; 2026 StudentHub Portal</p>
+    <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
 </footer>
 
 <script src="../../js/index.js"></script>

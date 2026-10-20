@@ -1,9 +1,9 @@
 <?php
-
+session_start();
 require_once "../db.php";
 
 $message = "";
-
+$messageType = "error";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -15,306 +15,202 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST["password"] ?? "";
     $confirm = $_POST["confirm"] ?? "";
 
-
     if (!preg_match("/^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/", $studentid)) {
-
-        $message = "Enter a valid ID, for example 25CE015.";
-
+        $message = "Enter a valid ID, for example 25AD001 or 25CE015.";
+        $messageType = "error";
     } elseif (!preg_match("/^[A-Za-z ]{3,}$/", $fullname)) {
-
-        $message = "Enter a valid full name.";
-
+        $message = "Enter a valid full name (letters and spaces only).";
+        $messageType = "error";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-        $message = "Enter a valid email address.";
-
+        $message = "Enter a valid institutional email address.";
+        $messageType = "error";
     } elseif (!preg_match("/^[0-9]{10}$/", $mobile)) {
-
-        $message = "Mobile number must contain 10 digits.";
-
+        $message = "Mobile number must contain exactly 10 digits.";
+        $messageType = "error";
     } elseif ($course === "") {
-
         $message = "Please select a department.";
-
+        $messageType = "error";
     } elseif (strlen($password) < 8) {
-
         $message = "Password must be at least 8 characters.";
-
+        $messageType = "error";
     } elseif ($password !== $confirm) {
-
         $message = "Passwords do not match.";
-
+        $messageType = "error";
     } else {
-
         try {
-
-
             $check = $conn->prepare(
-                "SELECT student_id
-                 FROM students
-                 WHERE student_id = :student_id
-                 OR email = :email"
+                "SELECT student_id FROM students WHERE student_id = :student_id OR email = :email"
             );
-
             $check->execute([
                 ":student_id" => $studentid,
                 ":email" => $email
             ]);
 
             if ($check->fetch()) {
-
-                $message = "Student ID or email already exists.";
-
+                $message = "Administrator ID or email already exists in the system.";
+                $messageType = "error";
             } else {
-
-
-                $hashedPassword = password_hash(
-                    $password,
-                    PASSWORD_DEFAULT
-                );
-
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 $sql = "INSERT INTO students
-                        (
-                            student_id,
-                            full_name,
-                            email,
-                            mobile,
-                            course,
-                            password,
-                            role
-                        )
+                        (student_id, full_name, email, mobile, course, password, role)
                         VALUES
-                        (
-                            :student_id,
-                            :full_name,
-                            :email,
-                            :mobile,
-                            :course,
-                            :password,
-                            :role
-                        )";
+                        (:student_id, :full_name, :email, :mobile, :course, :password, 'admin')";
 
                 $stmt = $conn->prepare($sql);
-
                 $stmt->execute([
                     ":student_id" => $studentid,
                     ":full_name" => $fullname,
                     ":email" => $email,
                     ":mobile" => $mobile,
                     ":course" => $course,
-                    ":password" => $hashedPassword,
-                    ":role" => "admin"
+                    ":password" => $hashedPassword
                 ]);
 
-                $message = "Admin account created successfully!";
-
+                $message = "Administrator account created successfully! You can now log in.";
+                $messageType = "success";
             }
-
         } catch (PDOException $e) {
-
-            $message = "Database error. Admin account was not created.";
-
+            $message = "Database error. Administrator account could not be created.";
+            $messageType = "error";
         }
     }
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration | Student HUB</title>
 
-    <title>StudentHub - Admin Registration</title>
-
-    <link
-        rel="stylesheet"
-        href="../css/style.css">
-
-    <style>
-
-        .admin-heading {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .admin-message {
-            text-align: center;
-            margin: 15px 0;
-            padding: 10px;
-            background: #f0f5ff;
-            border-radius: 5px;
-        }
-
-        .role-display {
-            padding: 10px;
-            background: #eeeeee;
-            border-radius: 5px;
-            display: inline-block;
-        }
-
-        .back-link {
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <header class="header">
+    <div class="auth-shell reveal">
 
-        <div class="logo">
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-        </div>
+        <div class="auth-card" style="max-width: 540px;">
 
-        <h2>ADMIN REGISTRATION</h2>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
 
-        <div class="logout-text">
-            <a href="admin.php">Dashboard</a>
-        </div>
-
-    </header>
-
-    <main>
-
-        <section>
-
-            <h2 class="admin-heading">
-                Create Admin Account
-            </h2>
+            <h1>Admin Registration</h1>
+            <p>Create an administrator account for portal management.</p>
 
             <?php if ($message !== ""): ?>
-
-                <p class="admin-message">
-                    <?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
-                </p>
-
+                <div class="form-message form-message--<?= $messageType ?>">
+                    <?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8') ?>
+                </div>
             <?php endif; ?>
 
-            <form
-                method="POST"
-                action="admin_register.php">
+            <form id="adminRegisterForm" method="POST" action="admin_register.php" style="display:flex; flex-direction:column; gap:16px;">
 
-                <p>
-                    <label for="studentid">Admin ID:</label>
-                    <br>
+                <div class="form-group">
+                    <label for="studentid">Admin / Faculty ID <span>*</span></label>
                     <input
                         type="text"
                         id="studentid"
                         name="studentid"
                         maxlength="8"
-                        placeholder="Example: 25CE015"
+                        placeholder="e.g. 25AD001"
                         pattern="[0-9]{2}[A-Z]{2,3}[0-9]{3}"
-                        required>
-                </p>
+                        required
+                        value="<?= htmlspecialchars($_POST['studentid'] ?? '') ?>">
+                    <span style="font-size:0.75rem; color:var(--ink-secondary); margin-top:3px; display:block;">Format: 2 digits, 2-3 uppercase letters, 3 digits</span>
+                </div>
 
-                <p>
-                    <label for="fullname">Full Name:</label>
-                    <br>
+                <div class="form-group">
+                    <label for="fullname">Full Name <span>*</span></label>
                     <input
                         type="text"
                         id="fullname"
                         name="fullname"
                         minlength="3"
-                        required>
-                </p>
+                        placeholder="e.g. Dr. Ramesh Patel"
+                        required
+                        value="<?= htmlspecialchars($_POST['fullname'] ?? '') ?>">
+                </div>
 
-                <p>
-                    <label for="email">Email:</label>
-                    <br>
+                <div class="form-group">
+                    <label for="email">Institutional Email <span>*</span></label>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        required>
-                </p>
+                        placeholder="admin@charusat.ac.in"
+                        required
+                        value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                </div>
 
-                <p>
-                    <label for="mobile">Mobile Number:</label>
-                    <br>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number <span>*</span></label>
                     <input
                         type="tel"
                         id="mobile"
                         name="mobile"
-                        maxlength="10"
                         pattern="[0-9]{10}"
-                        required>
-                </p>
+                        maxlength="10"
+                        placeholder="10-digit mobile number"
+                        required
+                        value="<?= htmlspecialchars($_POST['mobile'] ?? '') ?>">
+                </div>
 
-                <p>
-                    <label for="course">Department:</label>
-                    <br>
-
-                    <select id="course" name="course" required>
-                        <option value="">Select Department</option>
-                        <option value="Administration">Administration</option>
-                        <option value="B.tech">B.tech</option>
-                        <option value="BSc IT">BSc IT</option>
-                        <option value="BCom">BCom</option>
-                        <option value="BBA">BBA</option>
+                <div class="form-group">
+                    <label for="course">Department / Faculty <span>*</span></label>
+                    <select id="course" name="course" required style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); color:var(--ink); font-family:inherit;">
+                        <option value="">-- Select Department --</option>
+                        <option value="Computer Engineering" <?= (($_POST['course'] ?? '') === 'Computer Engineering') ? 'selected' : '' ?>>Computer Engineering (CE)</option>
+                        <option value="Information Technology" <?= (($_POST['course'] ?? '') === 'Information Technology') ? 'selected' : '' ?>>Information Technology (IT)</option>
+                        <option value="Mechanical Engineering" <?= (($_POST['course'] ?? '') === 'Mechanical Engineering') ? 'selected' : '' ?>>Mechanical Engineering (ME)</option>
+                        <option value="Civil Engineering" <?= (($_POST['course'] ?? '') === 'Civil Engineering') ? 'selected' : '' ?>>Civil Engineering (CL)</option>
+                        <option value="Electrical Engineering" <?= (($_POST['course'] ?? '') === 'Electrical Engineering') ? 'selected' : '' ?>>Electrical Engineering (EE)</option>
+                        <option value="Administration" <?= (($_POST['course'] ?? '') === 'Administration') ? 'selected' : '' ?>>Central Administration</option>
                     </select>
-                </p>
+                </div>
 
-                <p>
-                    <label>Role:</label>
-                    <br>
-                    <span class="role-display">Administrator</span>
-                </p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                    <div class="form-group">
+                        <label for="password">Password <span>*</span></label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            minlength="8"
+                            placeholder="At least 8 chars"
+                            required>
+                    </div>
 
-                <p>
-                    <label for="password">Password:</label>
-                    <br>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        minlength="8"
-                        autocomplete="new-password"
-                        required>
-                </p>
+                    <div class="form-group">
+                        <label for="confirm">Confirm Password <span>*</span></label>
+                        <input
+                            type="password"
+                            id="confirm"
+                            name="confirm"
+                            minlength="8"
+                            placeholder="Confirm password"
+                            required>
+                    </div>
+                </div>
 
-                <p>
-                    <label for="confirm">Confirm Password:</label>
-                    <br>
-                    <input
-                        type="password"
-                        id="confirm"
-                        name="confirm"
-                        minlength="8"
-                        autocomplete="new-password"
-                        required>
-                </p>
-
-                <button type="submit">Create Admin</button>
-
-                <button type="reset">Reset</button>
+                <div class="btn-group" style="margin-top:10px;">
+                    <button type="submit" class="btn btn--accent">Create Administrator Account</button>
+                    <a href="login.php" class="btn btn--ghost" style="text-align:center;">Back to Login</a>
+                </div>
 
             </form>
 
-            <p style="text-align:center; margin-top:20px;">
-                <a class="back-link" href="admin.php">
-                    Back to Admin Dashboard
-                </a>
-            </p>
+        </div>
 
-        </section>
-
-    </main>
+    </div>
 
     <footer>
-        <p>© 2026 CHARUSAT University | StudentHub</p>
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
 
 </body>

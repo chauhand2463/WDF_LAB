@@ -810,12 +810,17 @@ footer p {
   }
 
   .sidebar {
-    width: 100%;
-    height: auto;
-    max-height: 40vh;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    width: 280px;
+    height: calc(100vh - var(--topbar-height));
+    max-height: calc(100vh - var(--topbar-height));
+    border-right: 1px solid var(--border);
+    border-bottom: none;
     display: none;
+    box-shadow: var(--shadow-soft);
+    z-index: 500;
   }
 
   .sidebar.open {
@@ -839,6 +844,16 @@ footer p {
   }
 
   .topbar-center {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 901px) {
+  .mobile-menu-btn {
     display: none;
   }
 }
@@ -920,4 +935,65 @@ footer p {
   .auth-card {
     padding: 28px 20px;
   }
+}
+
+body.dark {
+  --page: #0C0E12;
+  --surface: #161921;
+  --surface-muted: #1E222C;
+  --ink: #E8EBF0;
+  --ink-secondary: #9CA3B0;
+  --ink-muted: #636A78;
+  --border: #252A36;
+  --border-strong: #333A48;
+
+  --accent: #5EAD68;
+  --accent-hover: #4D9C57;
+  --accent-soft: #162218;
+
+  --success: #4CAF6E;
+  --warning: #D4A843;
+  --danger: #D4645C;
+  --focus: #5B8FD4;
+
+  --shadow-soft: 0 4px 24px rgb(0 0 0 / 40%);
+  --shadow-card: 0 1px 4px rgb(0 0 0 / 50%);
+}
+
+body.dark .status--success {
+  background: rgba(76, 175, 110, 0.15);
+  border-color: rgba(76, 175, 110, 0.30);
+}
+
+body.dark .status--warning {
+  background: rgba(212, 168, 67, 0.15);
+  border-color: rgba(212, 168, 67, 0.30);
+}
+
+body.dark .status--danger {
+  background: rgba(212, 100, 92, 0.15);
+  border-color: rgba(212, 100, 92, 0.30);
+}
+
+body.dark .form-message--error {
+  background: rgba(212, 100, 92, 0.15);
+  border-color: rgba(212, 100, 92, 0.30);
+}
+
+body.dark .form-message--success {
+  background: rgba(76, 175, 110, 0.15);
+  border-color: rgba(76, 175, 110, 0.30);
+}
+
+body.dark .progress {
+  background: var(--surface-muted);
+}
+
+body.dark .sidebar-nav a:hover {
+  background: var(--surface-muted);
+}
+
+body.dark .admin-action.panel:hover {
+  border-color: var(--accent);
+  background: var(--surface-muted);
 }

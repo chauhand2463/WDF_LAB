@@ -9,7 +9,12 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: 0");
 
-$loginPage = "/practical14/pages/login.php";
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$basePath = dirname(dirname($scriptName));
+if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
+    $basePath = '';
+}
+$loginPage = ($basePath ? $basePath . '/pages/login.php' : '/pages/login.php');
 $timeoutSeconds = 15 * 60;
 
 if (

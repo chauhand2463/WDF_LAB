@@ -44,6 +44,12 @@ if (ini_get("session.use_cookies")) {
 
 session_destroy();
 
-header("Location: login.php");
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$basePath = dirname($scriptName);
+if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
+    $basePath = '';
+}
+$loginPage = ($basePath ? $basePath . '/login.php' : '/login.php');
+header("Location: " . $loginPage);
 exit;
 ?>

@@ -111,28 +111,29 @@ function h($value): string
 
 <body>
 
-    <div class="app-shell reveal">
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                <span class="kicker">Administration</span>
+                <h1>Admin Dashboard</h1>
+                <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                    Role-based administration console &mdash; all actions are recorded in the audit log
+                </p>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <a href="logout.php" class="btn btn--ghost">Sign out</a>
+        </div>
+    </header>
 
-        <header class="topbar">
-            <div class="topbar-left">
-                <div class="logo">
-                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
-                </div>
-            </div>
-            <div class="topbar-center">
-                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-                    <span class="kicker">Administration</span>
-                    <h1>Admin Dashboard</h1>
-                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                        Role-based administration console &mdash; all actions are recorded in the audit log
-                    </p>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <a href="logout.php" class="btn btn--ghost">Sign out</a>
-            </div>
-        </header>
+    <div class="app-shell reveal">
 
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-inner">
@@ -313,3 +314,4 @@ function h($value): string
 
 </body>
 </html>
+

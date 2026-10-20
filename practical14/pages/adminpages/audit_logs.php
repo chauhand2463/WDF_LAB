@@ -1,6 +1,7 @@
 
 <?php
 require_once __DIR__ . "/../session_check.php";
+require_once __DIR__ . "/../menu.php";
 
 if (($_SESSION["role"] ?? "") !== "admin") {
     http_response_code(403);
@@ -97,115 +98,146 @@ try {
     <link rel="stylesheet" href="../../css/style.css">
 
     <style>
-        .audit-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-        }
-
         .audit-card {
-            background: #fff;
-            color: #222;
-            padding: 22px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.10);
-            margin-bottom: 22px;
+            background: var(--surface);
+            color: var(--ink);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
         }
 
         .audit-toolbar {
             display: grid;
             grid-template-columns: 2fr 1fr auto auto;
-            gap: 12px;
+            gap: 14px;
             align-items: end;
+            margin-bottom: 20px;
         }
 
         .audit-toolbar label {
             display: block;
             font-weight: 600;
+            font-size: 0.88rem;
             margin-bottom: 6px;
+            color: var(--ink);
         }
 
         .audit-toolbar input,
         .audit-toolbar select {
             box-sizing: border-box;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--ink);
+            font: inherit;
         }
 
-        .audit-btn {
-            display: inline-block;
-            padding: 10px 15px;
+        .audit-toolbar input:focus,
+        .audit-toolbar select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 18px;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all var(--duration-ui) var(--ease-ui);
             text-decoration: none;
-            font-size: 14px;
-            background: #2563eb;
-            color: #fff;
         }
 
-        .audit-btn.secondary {
-            background: #e5e7eb;
-            color: #111;
+        .primary-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .reset-btn {
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            border: 1px solid var(--border);
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
         }
 
         .audit-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px;
-            font-size: 14px;
+            font-size: 0.9rem;
         }
 
         .audit-table th,
         .audit-table td {
-            padding: 10px 12px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--border);
             vertical-align: top;
         }
 
         .audit-table th {
-            background: #f3f4f6;
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .audit-action {
             font-weight: 600;
+            color: var(--accent);
         }
 
         .pagination {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-top: 16px;
+            gap: 8px;
+            margin-top: 18px;
         }
 
         .pagination a,
         .pagination span {
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
             text-decoration: none;
-            border: 1px solid #d1d5db;
-            color: #111;
+            border: 1px solid var(--border);
+            color: var(--ink);
+            font-size: 0.88rem;
         }
 
         .pagination .current {
-            background: #2563eb;
+            background: var(--accent);
             color: #fff;
-            border-color: #2563eb;
+            border-color: var(--accent);
+            font-weight: 600;
         }
 
         .message {
-            padding: 12px;
-            border-radius: 7px;
-            background: #fee2e2;
-            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(168, 67, 59, 0.25);
+            margin-bottom: 16px;
         }
 
         @media (max-width: 700px) {
@@ -218,38 +250,62 @@ try {
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+        <div class="logo">
+            <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+            <span class="logo-wordmark">Student <strong>HUB</strong></span>
+        </div>
     </div>
-
-    <button id="menuBtn"
-            class="menu-btn"
-            type="button"
-            aria-label="Open Menu"
-            aria-expanded="false">
-        ☰
-    </button>
-
-    <nav id="navbar">
-        <ul>
-            <li><a href="../Admin.php">Dashboard</a></li>
-            <li><a href="manage_students.php">Manage Students</a></li>
-            <li><a href="events.php">Manage Events</a></li>
-            <li><a href="../ajax_crud.php">AJAX CRUD</a></li>
-            <li><a href="audit_logs.php">Audit Log</a></li>
-            <li><a href="../logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <div class="topbar-center">
+        <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+            <span class="kicker">System Security</span>
+            <h1>Audit Logs</h1>
+            <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                Immutable administrative activity record &bull; CHARUSAT System
+            </p>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+            &#9788; Light Mode
+        </button>
+        <a href="../logout.php" class="btn btn--ghost">Sign out</a>
+    </div>
 </header>
 
-<main class="audit-container">
+<div class="app-shell reveal">
 
-    <h1>Audit Log</h1>
-    <p>
-        Trace of important administrative actions. Total records:
-        <strong><?= number_format($total) ?></strong>.
-    </p>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand">
+                <img src="../../images/charusat.png" alt="CHARUSAT Logo">
+                <span>Student <strong>HUB</strong></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <?php foreach (build_dynamic_menu("admin", "../") as $item): ?>
+                        <li><a href="<?= e($item["href"]) ?>" <?= $item["label"] === "Audit Log" ? 'aria-current="page"' : "" ?>><?= e($item["label"]) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-footer">
+                <p>Signed in as administrator</p>
+                <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main reveal" style="animation-delay:0.1s">
+        <div class="main-inner">
+
+            <div class="page-header">
+                <div class="kicker">Security Audit</div>
+                <h1>Administrative Activity Log</h1>
+                <p>Trace of important administrative and security actions. Total records: <strong><?= number_format($total) ?></strong>.</p>
+            </div>
 
     <?php if ($message !== ""): ?>
         <p class="message" role="status"><?= e($message) ?></p>
@@ -346,7 +402,9 @@ try {
         <?php endif; ?>
     </section>
 
-</main>
+        </div>
+    </main>
+</div>
 
 <footer>
     <p style="text-align:center;">&copy; 2026 StudentHub Portal</p>

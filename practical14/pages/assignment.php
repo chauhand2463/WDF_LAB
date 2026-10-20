@@ -21,29 +21,35 @@ if ($_SESSION["role"] !== "student") {
 
 <body>
 
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                <span class="kicker">Coursework</span>
+                <h1>Assignments</h1>
+                <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                    View upcoming assignments, due dates, and submission status
+                </p>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+                &#9788; Light Mode
+            </button>
+            <a href="logout.php" class="btn btn--ghost">Sign out</a>
+        </div>
+    </header>
+
     <div class="app-shell reveal">
 
-        <header class="topbar">
-            <div class="topbar-left">
-                <div class="logo">
-                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
-                </div>
-            </div>
-            <div class="topbar-center">
-                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-                    <span class="kicker">Coursework</span>
-                    <h1>Assignments</h1>
-                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                        View upcoming assignments, due dates, and submission status
-                    </p>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <a href="logout.php" class="btn btn--ghost">Sign out</a>
-            </div>
-        </header>
-
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-inner">
                 <div class="sidebar-brand">
@@ -63,49 +69,74 @@ if ($_SESSION["role"] !== "student") {
             </div>
         </aside>
 
+        <!-- Main -->
         <main class="main reveal" style="animation-delay:0.1s">
             <div class="main-inner">
 
                 <div class="page-header">
-                    <div class="kicker">Assignments</div>
-                    <h1>Coursework</h1>
-                    <p>Track your assignments and submission status this semester.</p>
+                    <div class="kicker">Coursework</div>
+                    <h1>Assignments &amp; Projects</h1>
+                    <p>Track your assignments, milestones, and grading status for the semester.</p>
+                </div>
+
+                <!-- Metrics -->
+                <div class="metric-grid reveal" style="animation-delay:0.15s; margin-bottom:24px;">
+                    <div class="metric metric--accent">
+                        <div class="metric-label">Total Assigned</div>
+                        <div class="metric-value">4</div>
+                        <div class="metric-context">All registered courses</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Pending Submissions</div>
+                        <div class="metric-value">2</div>
+                        <div class="metric-context">Due within 7 days</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Completed &amp; Submitted</div>
+                        <div class="metric-value">2</div>
+                        <div class="metric-context">50% semester completion</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Average Score</div>
+                        <div class="metric-value">92%</div>
+                        <div class="metric-context">Graded coursework</div>
+                    </div>
                 </div>
 
                 <div class="content-grid reveal" style="animation-delay:0.2s">
                     <div class="panel">
-                        <h2>Assignment List</h2>
+                        <h2>Current Assignment Submissions</h2>
                         <table class="data-table">
                             <thead>
                                 <tr>
                                     <th>Subject</th>
-                                    <th>Assignment</th>
-                                    <th>Due Date</th>
+                                    <th>Assignment Title</th>
+                                    <th>Deadline</th>
                                     <th class="numeric">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Mathematics</td>
-                                    <td>Assignment 1</td>
+                                    <td>Mathematics (MA101)</td>
+                                    <td>Differential Equations Problem Set 1</td>
                                     <td>20-Aug-2026</td>
                                     <td class="numeric"><span class="status status--warning">Pending</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Computer Engineering</td>
-                                    <td>Assignment 2</td>
+                                    <td>Computer Engineering (CE201)</td>
+                                    <td>Data Structures: AVL Trees &amp; Hashing</td>
                                     <td>22-Aug-2026</td>
                                     <td class="numeric"><span class="status status--success">Submitted</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Physics</td>
-                                    <td>Assignment 3</td>
+                                    <td>Physics (PY102)</td>
+                                    <td>Electromagnetism Lab Simulation Report</td>
                                     <td>25-Aug-2026</td>
                                     <td class="numeric"><span class="status status--warning">Pending</span></td>
                                 </tr>
                                 <tr>
-                                    <td>English</td>
-                                    <td>Assignment 1</td>
+                                    <td>English &amp; Comm. (HS101)</td>
+                                    <td>Technical Writing &amp; Presentation Draft</td>
                                     <td>28-Aug-2026</td>
                                     <td class="numeric"><span class="status status--success">Submitted</span></td>
                                 </tr>

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/session_check.php";
-require_once __DIR__ . "/db.php";
+require_once dirname(__DIR__) . "/db.php";
 require_once __DIR__ . "/menu.php";
 
 if ($_SESSION["role"] !== "student") {
@@ -23,37 +23,41 @@ if (!$student) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Profile | Student HUB Portal</title>
-
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                <span class="kicker">Profile</span>
+                <h1>Student Profile</h1>
+                <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                    Academic record and personal details
+                </p>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+                &#9788; Light Mode
+            </button>
+            <a href="logout.php" class="btn btn--ghost">Sign out</a>
+        </div>
+    </header>
+
     <div class="app-shell reveal">
 
-        <header class="topbar">
-            <div class="topbar-left">
-                <div class="logo">
-                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
-                </div>
-            </div>
-            <div class="topbar-center">
-                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-                    <span class="kicker">Profile</span>
-                    <h1>Student Profile</h1>
-                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                        Academic record and personal details
-                    </p>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <a href="logout.php" class="btn btn--ghost">Sign out</a>
-            </div>
-        </header>
-
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-inner">
                 <div class="sidebar-brand">
@@ -73,6 +77,7 @@ if (!$student) {
             </div>
         </aside>
 
+        <!-- Main -->
         <main class="main reveal" style="animation-delay:0.1s">
             <div class="main-inner">
 

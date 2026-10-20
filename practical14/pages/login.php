@@ -12,7 +12,13 @@ $messageType = "error";
 
 function redirectByRole($role)
 {
-    header("Location: " . ($role === "admin" ? "admin.php" : "index.php"));
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $basePath = dirname($scriptName);
+    if ($basePath === '/' || $basePath === '\\' || $basePath === '.') {
+        $basePath = '';
+    }
+    $target = $role === "admin" ? ($basePath . "/Admin.php") : ($basePath . "/index.php");
+    header("Location: " . $target);
     exit;
 }
 

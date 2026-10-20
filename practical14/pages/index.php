@@ -21,32 +21,33 @@ if ($_SESSION["role"] !== "student") {
 
 <body>
 
-    <div class="app-shell reveal">
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+                <span class="kicker">Student Dashboard</span>
+                <h1>Your semester, at a glance.</h1>
+                <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                    Semester II &bull; Academic Year 2025&ndash;26
+                </p>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+                &#9788; Light Mode
+            </button>
+            <a href="logout.php" class="btn btn--ghost">Sign out</a>
+        </div>
+    </header>
 
-        <!-- Topbar -->
-        <header class="topbar">
-            <div class="topbar-left">
-                <div class="logo">
-                    <img src="../images/charusat.png" alt="CHARUSAT Logo">
-                    <span class="logo-wordmark">Student <strong>HUB</strong></span>
-                </div>
-            </div>
-            <div class="topbar-center">
-                <div class="page-title-wrap reveal" style="animation-delay:0.05s">
-                    <span class="kicker">Student Dashboard</span>
-                    <h1>Your semester, at a glance.</h1>
-                    <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
-                        Semester II &bull; Academic Year 2025&ndash;26
-                    </p>
-                </div>
-            </div>
-            <div class="topbar-right">
-                <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
-                    &#9788; Light Mode
-                </button>
-                <a href="logout.php" class="btn btn--ghost">Sign out</a>
-            </div>
-        </header>
+    <div class="app-shell reveal">
 
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -225,7 +226,7 @@ if ($_SESSION["role"] !== "student") {
 
     </div>
 
-    <footer reveal>
+    <footer class="reveal">
         <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
 
@@ -235,3 +236,4 @@ if ($_SESSION["role"] !== "student") {
 </body>
 
 </html>
+

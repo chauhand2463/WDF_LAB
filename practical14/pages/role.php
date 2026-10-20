@@ -1,132 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <title>Choose Role | Student HUB</title>
 
-    <title>StudentHub - Choose Role</title>
-
-    <link
-        rel="stylesheet"
-        href="../css/style.css">
-
-    <style>
-        .role-container {
-            width: 90%;
-            max-width: 500px;
-            margin: 60px auto;
-            padding: 35px;
-            background: white;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
-
-        .role-container h1 {
-            color: #1428a0;
-            margin-bottom: 10px;
-        }
-
-        .role-container p {
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .role-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            border: none;
-            border-radius: 8px;
-            background: #1428a0;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            text-decoration: none;
-            box-sizing: border-box;
-        }
-
-        .role-btn:hover {
-            background: #0b176d;
-        }
-
-        .admin-btn {
-            background: #555;
-        }
-
-        .admin-btn:hover {
-            background: #333;
-        }
-    </style>
-
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-    <header class="header">
+    <div class="auth-shell reveal">
 
-        <div class="logo">
-            <img
-                src="../images/charusat.png"
-                alt="CHARUSAT Logo">
-        </div>
+        <div class="auth-card" style="max-width: 520px;">
 
-        <div class="page-title">
-            <h2>CHOOSE YOUR ROLE</h2>
-        </div>
+            <div class="logo">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span class="logo-wordmark">Student <strong>HUB</strong></span>
+            </div>
 
-        <div class="logout-text">
-            <a href="login.php">Login</a>
-        </div>
+            <h1>Choose Your Role</h1>
+            <p>Select your account type to proceed with registration.</p>
 
-    </header>
+            <div style="display: flex; flex-direction: column; gap: 16px; margin: 24px 0;">
 
+                <!-- Student Option -->
+                <a href="register.php" style="display: block; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); transition: all var(--duration-ui) var(--ease-ui); text-align: left;" onmouseover="this.style.borderColor='var(--accent)'; this.style.boxShadow='var(--shadow-soft)'" onmouseout="this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <span style="font-weight: 700; font-size: 1.1rem; color: var(--ink);">Student Account</span>
+                        <span class="status status--success" style="font-size: 0.75rem;">Instant Access</span>
+                    </div>
+                    <p style="color: var(--ink-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+                        For currently enrolled university students. Access your semester timetable, coursework submissions, attendance logs, and event registrations.
+                    </p>
+                </a>
 
-    <main>
+                <!-- Admin Option -->
+                <a href="admin_register.php" style="display: block; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); transition: all var(--duration-ui) var(--ease-ui); text-align: left;" onmouseover="this.style.borderColor='var(--accent)'; this.style.boxShadow='var(--shadow-soft)'" onmouseout="this.style.borderColor='var(--border)'; this.style.boxShadow='none'">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <span style="font-weight: 700; font-size: 1.1rem; color: var(--ink);">Administrator / Faculty</span>
+                        <span class="status status--warning" style="font-size: 0.75rem;">Admin Privileges</span>
+                    </div>
+                    <p style="color: var(--ink-secondary); font-size: 0.88rem; line-height: 1.5; margin: 0;">
+                        For departmental coordinators and faculty. Manage student rosters, organize events, perform AJAX CRUD operations, and view audit logs.
+                    </p>
+                </a>
 
-        <div class="role-container">
+            </div>
 
-            <h1>Join StudentHub</h1>
-
-            <p>
-                Choose how you want to access the portal.
-            </p>
-
-            <a
-                href="register.php"
-                class="role-btn">
-
-                Student
-
-            </a>
-
-            <a
-                href="admin_register.php"
-                class="role-btn admin-btn">
-
-                Admin
-
-            </a>
-
-            <p>
-                Admin accounts must be created or approved
-                by the administrator.
-            </p>
+            <div style="text-align: center; font-size: 0.9rem; color: var(--ink-secondary); border-top: 1px solid var(--border); padding-top: 18px;">
+                Already have an account? <a href="login.php" style="color: var(--accent); font-weight: 600;">Sign in here</a>
+            </div>
 
         </div>
 
-    </main>
-
+    </div>
 
     <footer>
-        <p>© 2026 CHARUSAT University | Student Portal</p>
+        <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
 
 </body>

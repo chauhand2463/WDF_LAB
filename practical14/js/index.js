@@ -19,6 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Mobile sidebar toggle
   const sidebar = document.getElementById("sidebar");
   const closeSidebar = document.getElementById("closeSidebar");
+  const openSidebar = document.getElementById("openSidebar");
+
+  if (openSidebar && sidebar) {
+    openSidebar.addEventListener("click", function () {
+      sidebar.classList.toggle("open");
+    });
+  }
 
   if (closeSidebar && sidebar) {
     closeSidebar.addEventListener("click", function () {
@@ -43,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (theme === "light") {
       document.body.classList.remove("dark");
       document.body.classList.add("light");
-      if (themeBtn) themeBtn.textContent = "☀ Light Mode";
+      if (themeBtn) themeBtn.textContent = "\u263E Dark Mode";
       localStorage.setItem("theme", "light");
     } else {
       document.body.classList.remove("light");

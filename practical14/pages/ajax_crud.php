@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/session_check.php";
+require_once __DIR__ . "/menu.php";
 
 if (($_SESSION["role"] ?? "") !== "admin") {
     http_response_code(403);
@@ -17,43 +18,40 @@ function e($value): string
     return htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8");
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AJAX CRUD | StudentHub</title>
+    <title>AJAX CRUD Console | Student HUB</title>
 
     <link rel="stylesheet" href="../css/style.css">
 
     <style>
-        .ajax-container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-        }
-
         .ajax-card {
-            background: #fff;
-            color: #222;
-            padding: 22px;
+            background: var(--surface);
+            color: var(--ink);
+            padding: 24px;
             margin-bottom: 24px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,.10);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-card);
         }
 
         .ajax-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
+            gap: 16px;
         }
 
-        .ajax-form label {
+        .ajax-form label,
+        .ajax-toolbar label {
             display: block;
             font-weight: 600;
+            font-size: 0.88rem;
             margin-bottom: 6px;
+            color: var(--ink);
         }
 
         .ajax-form input,
@@ -63,10 +61,22 @@ function e($value): string
         .ajax-toolbar select {
             box-sizing: border-box;
             width: 100%;
-            padding: 10px;
-            border: 1px solid #bbb;
-            border-radius: 6px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            color: var(--ink);
             font: inherit;
+        }
+
+        .ajax-form input:focus,
+        .ajax-form select:focus,
+        .ajax-form textarea:focus,
+        .ajax-toolbar input:focus,
+        .ajax-toolbar select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
         .ajax-form textarea {
@@ -77,123 +87,173 @@ function e($value): string
         .ajax-toolbar {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 12px;
+            gap: 16px;
             align-items: end;
+            margin-bottom: 16px;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all var(--duration-ui) var(--ease-ui);
             text-decoration: none;
-            font-size: 14px;
-            margin: 3px 0;
         }
 
         .primary-btn {
-            background: #2563eb;
-            color: white;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .primary-btn:hover {
+            background: var(--accent-hover);
         }
 
         .edit-btn {
-            background: #eab308;
-            color: #111;
+            background: var(--surface-muted);
+            color: var(--ink);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .edit-btn:hover {
+            border-color: var(--ink-secondary);
         }
 
         .delete-btn {
-            background: #dc2626;
-            color: white;
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(168, 67, 59, 0.3);
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            color: #fff;
         }
 
         .cancel-btn {
-            background: #e5e7eb;
-            color: #111;
-        }
-
-        .btn:disabled {
-            opacity: .6;
-            cursor: not-allowed;
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            border: 1px solid var(--border);
         }
 
         .ajax-status {
-            padding: 12px;
-            border-radius: 7px;
-            margin: 15px 0;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
         .ajax-status.success {
-            background: #d1fae5;
-            color: #065f46;
+            background: var(--accent-soft);
+            color: var(--success);
+            border: 1px solid var(--border);
         }
 
         .ajax-status.error {
-            background: #fee2e2;
-            color: #991b1b;
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(168, 67, 59, 0.25);
         }
 
         .ajax-status.info {
-            background: #dbeafe;
-            color: #1e40af;
+            background: var(--surface-muted);
+            color: var(--ink);
+            border: 1px solid var(--border);
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
         }
 
         .ajax-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 760px;
+            font-size: 0.9rem;
         }
 
         .ajax-table th,
         .ajax-table td {
-            padding: 12px;
+            padding: 12px 14px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--border);
         }
 
         .ajax-table th {
-            background: #f3f4f6;
-            color: #111;
+            background: var(--surface-muted);
+            color: var(--ink-secondary);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .ajax-table tr:last-child td {
+            border-bottom: none;
         }
 
         .empty-row {
             text-align: center;
-            color: #6b7280;
+            color: var(--ink-muted);
+            padding: 24px 0;
+            font-size: 0.9rem;
         }
 
         .status-badge {
             display: inline-block;
             padding: 4px 10px;
             border-radius: 999px;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
         }
 
         .status-open {
-            background: #d1fae5;
-            color: #065f46;
+            background: var(--accent-soft);
+            color: var(--success);
         }
 
         .status-closed {
-            background: #fee2e2;
-            color: #991b1b;
+            background: rgba(168, 67, 59, 0.1);
+            color: var(--danger);
         }
 
         .ajax-pagination {
-            margin-top: 15px;
+            margin-top: 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+        }
+
+        .ajax-pagination button {
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+            font-size: 0.85rem;
+        }
+
+        .ajax-pagination button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
         .page-info {
-            font-size: 14px;
-            color: #374151;
+            font-size: 0.88rem;
+            color: var(--ink-secondary);
         }
 
         .section-head {
@@ -202,272 +262,320 @@ function e($value): string
             justify-content: space-between;
             align-items: center;
             gap: 12px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
         }
 
-        @media (max-width: 700px) {
-            .ajax-container {
-                padding: 10px;
-            }
+        .section-head h2 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            color: var(--ink);
+            margin: 0;
+        }
 
-            .ajax-card {
-                padding: 14px;
-            }
-
-            .ajax-toolbar {
-                grid-template-columns: 1fr;
-            }
+        .section-head span {
+            font-size: 0.82rem;
+            color: var(--ink-secondary);
         }
     </style>
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        <img src="../images/charusat.png" alt="CHARUSAT Logo">
+<!-- Topbar -->
+<header class="topbar">
+    <div class="topbar-left">
+        <button class="btn btn--ghost mobile-menu-btn" id="openSidebar" aria-label="Open menu" style="padding:8px 10px;">&#9776;</button>
+        <div class="logo">
+            <img src="../images/charusat.png" alt="CHARUSAT Logo">
+            <span class="logo-wordmark">Student <strong>HUB</strong></span>
+        </div>
     </div>
-
-    <button id="menuBtn"
-            class="menu-btn"
-            type="button"
-            aria-label="Open Menu"
-            aria-expanded="false">
-        ☰
-    </button>
-
-    <nav id="navbar">
-        <ul>
-            <li><a href="../Admin.php">Dashboard</a></li>
-            <li><a href="adminpages/manage_students.php">Manage Students</a></li>
-            <li><a href="adminpages/events.php">Manage Events</a></li>
-            <li><a href="ajax_crud.php">AJAX CRUD</a></li>
-            <li><a href="logout.php">Logout</a></li>
-        </ul>
-    </nav>
+    <div class="topbar-center">
+        <div class="page-title-wrap reveal" style="animation-delay:0.05s">
+            <span class="kicker">Administration</span>
+            <h1>AJAX CRUD Console</h1>
+            <p style="margin-top:6px;color:var(--ink-secondary);font-size:0.9rem;">
+                Asynchronous student and event management via REST APIs
+            </p>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <button id="themeBtn" class="btn btn--ghost" style="padding:8px 14px;">
+            &#9788; Light Mode
+        </button>
+        <a href="logout.php" class="btn btn--ghost">Sign out</a>
+    </div>
 </header>
 
-<main class="ajax-container">
+<div class="app-shell reveal">
 
-    <h1>AJAX CRUD Dashboard</h1>
-    <p>
-        Manage students and events without page reloads. The browser talks to the
-        JSON API (<code>../api/</code>) using <code>fetch()</code>.
-    </p>
-
-    <div id="ajaxStatus" class="ajax-status" role="status" hidden></div>
-
-    <section class="ajax-card">
-        <div class="section-head">
-            <h2 id="studentFormHeading">Add New Student</h2>
-            <span>Live search, sorting sync and pagination</span>
-        </div>
-
-        <form id="studentForm" data-mode="add" novalidate>
-            <div class="ajax-form">
-                <div>
-                    <label for="student_id">Student ID *</label>
-                    <input type="text"
-                           id="student_id"
-                           name="student_id"
-                           maxlength="8"
-                           placeholder="25CE015"
-                           required>
-                </div>
-
-                <div>
-                    <label for="student_full_name">Full Name *</label>
-                    <input type="text"
-                           id="student_full_name"
-                           maxlength="150"
-                           required>
-                </div>
-
-                <div>
-                    <label for="student_email">Email *</label>
-                    <input type="email"
-                           id="student_email"
-                           maxlength="255"
-                           required>
-                </div>
-
-                <div>
-                    <label for="student_mobile">Mobile *</label>
-                    <input type="text"
-                           id="student_mobile"
-                           maxlength="10"
-                           inputmode="numeric"
-                           required>
-                </div>
-
-                <div>
-                    <label for="student_course">Course *</label>
-                    <input type="text"
-                           id="student_course"
-                           maxlength="100"
-                           required>
-                </div>
-
-                <div>
-                    <label for="student_password">Password *</label>
-                    <input type="password"
-                           id="student_password"
-                           minlength="8"
-                           autocomplete="new-password">
-                </div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner">
+            <div class="sidebar-brand">
+                <img src="../images/charusat.png" alt="CHARUSAT Logo">
+                <span>Student <strong>HUB</strong></span>
             </div>
-
-            <p>
-                <button type="submit" id="studentSubmitBtn" class="btn primary-btn">
-                    Add Student
-                </button>
-                <button type="button" id="studentCancelBtn" class="btn cancel-btn" hidden>
-                    Cancel Edit
-                </button>
-            </p>
-        </form>
-    </section>
-
-    <section class="ajax-card">
-        <h2>Student Records</h2>
-
-        <div class="ajax-toolbar">
-            <div>
-                <label for="studentSearch">Search</label>
-                <input type="search"
-                       id="studentSearch"
-                       placeholder="Student ID, name, email or mobile">
-            </div>
-
-            <div>
-                <label for="studentCourseFilter">Filter by Course</label>
-                <select id="studentCourseFilter">
-                    <option value="">All Courses</option>
-                </select>
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <?php foreach (build_dynamic_menu("admin") as $item): ?>
+                        <li><a href="<?= e($item["href"]) ?>" <?= $item["label"] === "AJAX CRUD" ? 'aria-current="page"' : "" ?>><?= e($item["label"]) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-footer">
+                <p>Signed in as administrator</p>
+                <button class="btn btn--ghost" id="closeSidebar">Close menu</button>
             </div>
         </div>
+    </aside>
 
-        <div class="table-wrapper">
-            <table class="ajax-table">
-                <thead>
-                    <tr>
-                        <th>Student ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Mobile</th>
-                        <th>Course</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+    <!-- Main -->
+    <main class="main reveal" style="animation-delay:0.1s">
+        <div class="main-inner">
 
-                <tbody id="studentTableBody"></tbody>
-            </table>
-        </div>
-
-        <p id="studentTableStatus" class="empty-row" hidden></p>
-        <div id="studentPagination" class="ajax-pagination"></div>
-    </section>
-
-    <section class="ajax-card">
-        <div class="section-head">
-            <h2 id="eventFormHeading">Add New Event</h2>
-            <span>Event CRUD over REST-style endpoints</span>
-        </div>
-
-        <form id="eventForm" data-mode="add" novalidate>
-            <input type="hidden" id="event_id">
-
-            <div class="ajax-form">
-                <div>
-                    <label for="event_name">Event Name *</label>
-                    <input type="text"
-                           id="event_name"
-                           maxlength="150"
-                           required>
-                </div>
-
-                <div>
-                    <label for="event_date">Event Date *</label>
-                    <input type="date" id="event_date" required>
-                </div>
-
-                <div>
-                    <label for="event_category">Category</label>
-                    <input type="text"
-                           id="event_category"
-                           maxlength="100"
-                           placeholder="Technical / Cultural">
-                </div>
-
-                <div>
-                    <label for="event_status">Status</label>
-                    <select id="event_status">
-                        <option value="Open">Open</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                </div>
+            <div class="page-header">
+                <div class="kicker">REST Console</div>
+                <h1>AJAX Data Management</h1>
+                <p>Live management of student records and event schedules without page reloads.</p>
             </div>
 
-            <div style="margin-top:15px;">
-                <label for="event_description">Description</label>
-                <textarea id="event_description" maxlength="5000"></textarea>
-            </div>
+            <div id="ajaxStatus" class="ajax-status" role="status" hidden></div>
 
-            <p>
-                <button type="submit" id="eventSubmitBtn" class="btn primary-btn">
-                    Add Event
-                </button>
-                <button type="button" id="eventCancelBtn" class="btn cancel-btn" hidden>
-                    Cancel Edit
-                </button>
-            </p>
-        </form>
-    </section>
+            <!-- STUDENT FORM CARD -->
+            <section class="ajax-card reveal" style="animation-delay:0.15s;">
+                <div class="section-head">
+                    <h2 id="studentFormHeading">Add New Student</h2>
+                    <span>Live client-server sync with JSON APIs</span>
+                </div>
 
-    <section class="ajax-card">
-        <h2>Event Records</h2>
+                <form id="studentForm" data-mode="add" novalidate>
+                    <div class="ajax-form">
+                        <div>
+                            <label for="student_id">Student ID *</label>
+                            <input type="text"
+                                   id="student_id"
+                                   name="student_id"
+                                   maxlength="8"
+                                   placeholder="25CE015"
+                                   required>
+                        </div>
 
-        <div class="ajax-toolbar">
-            <div>
-                <label for="eventSearch">Search</label>
-                <input type="search"
-                       id="eventSearch"
-                       placeholder="Event name or category">
-            </div>
+                        <div>
+                            <label for="student_full_name">Full Name *</label>
+                            <input type="text"
+                                   id="student_full_name"
+                                   maxlength="150"
+                                   placeholder="Full Name"
+                                   required>
+                        </div>
 
-            <div>
-                <label for="eventStatusFilter">Filter by Status</label>
-                <select id="eventStatusFilter">
-                    <option value="">All Statuses</option>
-                    <option value="Open">Open</option>
-                    <option value="Closed">Closed</option>
-                </select>
-            </div>
+                        <div>
+                            <label for="student_email">Email *</label>
+                            <input type="email"
+                                   id="student_email"
+                                   maxlength="255"
+                                   placeholder="name@charusat.edu.in"
+                                   required>
+                        </div>
+
+                        <div>
+                            <label for="student_mobile">Mobile *</label>
+                            <input type="text"
+                                   id="student_mobile"
+                                   maxlength="10"
+                                   placeholder="10-digit number"
+                                   inputmode="numeric"
+                                   required>
+                        </div>
+
+                        <div>
+                            <label for="student_course">Course *</label>
+                            <input type="text"
+                                   id="student_course"
+                                   maxlength="100"
+                                   placeholder="Computer Engineering"
+                                   required>
+                        </div>
+
+                        <div>
+                            <label for="student_password">Password *</label>
+                            <input type="password"
+                                   id="student_password"
+                                   minlength="8"
+                                   placeholder="At least 8 characters"
+                                   autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px; display:flex; gap:10px;">
+                        <button type="submit" id="studentSubmitBtn" class="btn-action primary-btn">
+                            Add Student
+                        </button>
+                        <button type="button" id="studentCancelBtn" class="btn-action cancel-btn" hidden>
+                            Cancel Edit
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- STUDENT RECORDS TABLE -->
+            <section class="ajax-card reveal" style="animation-delay:0.2s;">
+                <div class="section-head">
+                    <h2>Student Records</h2>
+                    <span>Real-time filter and live query</span>
+                </div>
+
+                <div class="ajax-toolbar">
+                    <div>
+                        <label for="studentSearch">Search Students</label>
+                        <input type="search"
+                               id="studentSearch"
+                               placeholder="Search by ID, name, email or mobile...">
+                    </div>
+
+                    <div>
+                        <label for="studentCourseFilter">Filter by Course</label>
+                        <select id="studentCourseFilter">
+                            <option value="">All Courses</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="ajax-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Course</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
+                </div>
+
+                <p id="studentTableStatus" class="empty-row" hidden></p>
+                <div id="studentPagination" class="ajax-pagination"></div>
+            </section>
+
+            <!-- EVENT FORM CARD -->
+            <section class="ajax-card reveal" style="animation-delay:0.25s;">
+                <div class="section-head">
+                    <h2 id="eventFormHeading">Add New Event</h2>
+                    <span>REST-style event scheduling</span>
+                </div>
+
+                <form id="eventForm" data-mode="add" novalidate>
+                    <input type="hidden" id="event_id">
+
+                    <div class="ajax-form">
+                        <div>
+                            <label for="event_name">Event Name *</label>
+                            <input type="text"
+                                   id="event_name"
+                                   maxlength="150"
+                                   placeholder="Event Title"
+                                   required>
+                        </div>
+
+                        <div>
+                            <label for="event_date">Event Date *</label>
+                            <input type="date" id="event_date" required>
+                        </div>
+
+                        <div>
+                            <label for="event_category">Category</label>
+                            <input type="text"
+                                   id="event_category"
+                                   maxlength="100"
+                                   placeholder="Technical / Cultural / Sports">
+                        </div>
+
+                        <div>
+                            <label for="event_status">Status</label>
+                            <select id="event_status">
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:16px;">
+                        <label for="event_description">Event Description</label>
+                        <textarea id="event_description" maxlength="5000" placeholder="Provide complete event details..."></textarea>
+                    </div>
+
+                    <div style="margin-top:16px; display:flex; gap:10px;">
+                        <button type="submit" id="eventSubmitBtn" class="btn-action primary-btn">
+                            Add Event
+                        </button>
+                        <button type="button" id="eventCancelBtn" class="btn-action cancel-btn" hidden>
+                            Cancel Edit
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- EVENT RECORDS TABLE -->
+            <section class="ajax-card reveal" style="animation-delay:0.3s;">
+                <div class="section-head">
+                    <h2>Event Records</h2>
+                    <span>Manage all scheduled university events</span>
+                </div>
+
+                <div class="ajax-toolbar">
+                    <div>
+                        <label for="eventSearch">Search Events</label>
+                        <input type="search"
+                               id="eventSearch"
+                               placeholder="Search by event name or category...">
+                    </div>
+
+                    <div>
+                        <label for="eventStatusFilter">Filter by Status</label>
+                        <select id="eventStatusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="Open">Open</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="ajax-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="eventTableBody"></tbody>
+                    </table>
+                </div>
+
+                <p id="eventTableStatus" class="empty-row" hidden></p>
+            </section>
+
         </div>
+    </main>
 
-        <div class="table-wrapper">
-            <table class="ajax-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Event Name</th>
-                        <th>Date</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody id="eventTableBody"></tbody>
-            </table>
-        </div>
-
-        <p id="eventTableStatus" class="empty-row" hidden></p>
-    </section>
-
-</main>
+</div>
 
 <footer>
-    <p style="text-align:center;">&copy; 2026 StudentHub Portal</p>
+    <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
 </footer>
 
 <script>
