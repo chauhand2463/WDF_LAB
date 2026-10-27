@@ -1,180 +1,89 @@
+document.addEventListener("DOMContentLoaded", function () {
 
+    const form = document.getElementById("registerForm");
 
-const form = document.getElementById("registerForm");
-
-
-form.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-
-
-    const fullname =
-        document.getElementById("fullname").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const mobile =
-        document.getElementById("mobile").value.trim();
-
-    const course =
-        document.getElementById("course").value;
-
-    const password =
-        document.getElementById("password").value;
-
-    const confirm =
-        document.getElementById("confirm").value;
-
-
-
-    const namePattern = /^[A-Za-z ]{3,}$/;
-
-    if (!namePattern.test(fullname)) {
-
-        alert("Please enter a valid name.");
+    if (!form) {
 
         return;
 
     }
 
+    form.addEventListener("submit", function (event) {
 
+        const studentidInput = document.getElementById("studentid");
+        const fullname = document.getElementById("fullname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const mobile = document.getElementById("mobile").value.trim();
+        const course = document.getElementById("course").value;
+        const password = document.getElementById("password").value;
+        const confirm = document.getElementById("confirm").value;
 
-    const emailPattern =
-        /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        const studentid = studentidInput.value.trim().toUpperCase();
 
-    if (!emailPattern.test(email)) {
+        if (!/^[0-9]{2}[A-Z]{2,3}[0-9]{3}$/.test(studentid)) {
 
-        alert("Please enter a valid email address.");
+            event.preventDefault();
+            alert("Student ID must be like 25CE015.");
+            studentidInput.focus();
+            return;
 
-        return;
+        }
 
-    }
+        studentidInput.value = studentid;
 
+        if (!/^[A-Za-z ]{3,}$/.test(fullname)) {
 
+            event.preventDefault();
+            alert("Please enter a valid name.");
+            return;
 
-    const mobilePattern = /^[0-9]{10}$/;
+        }
 
-    if (!mobilePattern.test(mobile)) {
+        if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
 
-        alert("Mobile number must contain exactly 10 digits.");
+            event.preventDefault();
+            alert("Please enter a valid email address.");
+            return;
 
-        return;
+        }
 
-    }
+        if (!/^[0-9]{10}$/.test(mobile)) {
 
+            event.preventDefault();
+            alert("Mobile number must contain exactly 10 digits.");
+            return;
 
+        }
 
-    if (course === "") {
+        if (course === "") {
 
-        alert("Please select a course.");
+            event.preventDefault();
+            alert("Please select a course.");
+            return;
 
-        return;
+        }
 
-    }
+        const passwordPattern =
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
 
+        if (!passwordPattern.test(password)) {
 
+            event.preventDefault();
+            alert(
+                "Password must contain 8 characters, uppercase, lowercase, number and special character."
+            );
+            return;
 
-    const passwordPattern =
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
+        }
 
-    if (!passwordPattern.test(password)) {
+        if (password !== confirm) {
 
-        alert(
-            "Password must contain 8 characters, uppercase, lowercase, number and special character."
-        );
+            event.preventDefault();
+            alert("Password and Confirm Password do not match.");
+            return;
 
-        return;
+        }
 
-    }
-
-
-
-    if (password !== confirm) {
-
-        alert("Password and Confirm Password do not match.");
-
-        return;
-
-    }
-
-
-
-    const student = {
-
-        id: Date.now(),
-
-        fullname: fullname,
-
-        email: email,
-
-        mobile: mobile,
-
-        course: course,
-
-        password: password
-
-    };
-
-
-
-    let students = JSON.parse(
-        localStorage.getItem("studentData") || "[]"
-    );
-
-
-
-    const emailExists = students.some(
-        existingStudent => existingStudent.email === email
-    );
-
-    if (emailExists) {
-
-        alert("This email is already registered.");
-
-        return;
-
-    }
-
-
-
-    students.push(student);
-
-
-
-    const jsonData = JSON.stringify(students);
-
-
-    console.log("Student JSON:", jsonData);
-
-
-
-    localStorage.setItem(
-        "studentData",
-        jsonData
-    );
-
-
-    localStorage.setItem(
-        "userID",
-        fullname
-    );
-
-
-
-    alert("Registration Successful!");
-
-
-
-    window.location.href = "login.php";
-
-});
-
-
-
-form.addEventListener("reset", function () {
-
-    alert("Form has been reset.");
+    });
 
 });

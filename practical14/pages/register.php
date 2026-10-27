@@ -9,13 +9,22 @@ if (!isset($_SESSION["csrf_token"])) {
 require_once "../db.php";
 
 $message = "";
+$isSuccess = false;
+
+$oldStudentId = "";
+$oldFullname = "";
+$oldEmail = "";
+$oldMobile = "";
+$oldCourse = "";
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $submittedToken = $_POST["csrf_token"] ?? "";
+
     if (
-        !isset($_POST["csrf_token"]) ||
-        $_POST["csrf_token"] != $_SESSION["csrf_token"]
+        !is_string($submittedToken) ||
+        !hash_equals($_SESSION["csrf_token"], $submittedToken)
     ) {
 
         $message = "Invalid form submission.";
@@ -23,13 +32,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     else {
 
-        $studentid = trim($_POST["studentid"]);
-        $fullname = trim($_POST["fullname"]);
-        $email = trim($_POST["email"]);
-        $mobile = trim($_POST["mobile"]);
-        $course = trim($_POST["course"]);
-        $password = $_POST["password"];
-        $confirm = $_POST["confirm"];
+        $studentid = strtoupper(trim($_POST["studentid"] ?? ""));
+        $fullname = trim($_POST["fullname"] ?? "");
+        $email = trim($_POST["email"] ?? "");
+        $mobile = trim($_POST["mobile"] ?? "");
+        $course = trim($_POST["course"] ?? "");
+        $password = $_POST["password"] ?? "";
+        $confirm = $_POST["confirm"] ?? "";
+
+        $oldStudentId = $studentid;
+        $oldFullname = $fullname;
+        $oldEmail = $email;
+        $oldMobile = $mobile;
+        $oldCourse = $course;
 
 
         if ($studentid == "") {
@@ -75,6 +90,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         elseif (strlen($password) < 8) {
 
             $message = "Password must be at least 8 characters";
+
+        }
+        elseif (
+            !preg_match(
+                "/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/",
+                $password
+            )
+        ) {
+
+            $message = "Password must include uppercase, lowercase, number and special character";
 
         }
         elseif ($password != $confirm) {
@@ -192,6 +217,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             catch (PDOException $e) {
 
+                error_log("Student registration failed: " . $e->getMessage());
+
                 $message =
                     "Database error. Student was not registered.";
 
@@ -200,6 +227,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
     }
+
+}
+
+if ($message !== "" && strpos($message, "Successful") !== false) {
+
+    $isSuccess = true;
+
+    $oldStudentId = "";
+    $oldFullname = "";
+    $oldEmail = "";
+    $oldMobile = "";
+    $oldCourse = "";
+
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
 
 }
 
@@ -245,9 +286,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($message != "") {
 
-                $type = strpos($message, "Successful") !== false ? "success" : "error";
+                $type = $isSuccess ? "success" : "error";
                 echo "<div class=\"form-message form-message--{$type}\">";
-                echo htmlspecialchars($message);
+                echo htmlspecialchars($message, ENT_QUOTES, "UTF-8");
                 echo "</div>";
 
             }
@@ -285,6 +326,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         name="studentid"
                         placeholder="Example: 25CE015"
                         maxlength="8"
+                        value="<?php echo htmlspecialchars($oldStudentId, ENT_QUOTES, "UTF-8"); ?>"
                         required>
 
                 </div>
@@ -300,6 +342,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         id="fullname"
                         name="fullname"
                         placeholder="Enter your full name"
+                        value="<?php echo htmlspecialchars($oldFullname, ENT_QUOTES, "UTF-8"); ?>"
                         required>
 
                 </div>
@@ -315,6 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         id="email"
                         name="email"
                         placeholder="Enter your email"
+                        value="<?php echo htmlspecialchars($oldEmail, ENT_QUOTES, "UTF-8"); ?>"
                         required>
 
                 </div>
@@ -331,6 +375,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         name="mobile"
                         placeholder="Enter 10-digit mobile number"
                         maxlength="10"
+                        value="<?php echo htmlspecialchars($oldMobile, ENT_QUOTES, "UTF-8"); ?>"
                         required>
 
                 </div>
@@ -350,19 +395,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             Select Course
                         </option>
 
-                        <option value="B.tech">
+                        <option value="B.tech" <?php echo $oldCourse === "B.tech" ? "selected" : ""; ?>>
                             B.tech
                         </option>
 
-                        <option value="BSc IT">
+                        <option value="BSc IT" <?php echo $oldCourse === "BSc IT" ? "selected" : ""; ?>>
                             BSc IT
                         </option>
 
-                        <option value="BCom">
+                        <option value="BCom" <?php echo $oldCourse === "BCom" ? "selected" : ""; ?>>
                             BCom
                         </option>
 
-                        <option value="BBA">
+                        <option value="BBA" <?php echo $oldCourse === "BBA" ? "selected" : ""; ?>>
                             BBA
                         </option>
 
@@ -407,6 +452,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             </form>
 
+            <div style="text-align: center; font-size: 0.9rem; color: var(--ink-secondary); border-top: 1px solid var(--border); padding-top: 18px; margin-top: 18px;">
+                Already have an account? <a href="login.php" style="color: var(--accent); font-weight: 600;">Sign in here</a>
+            </div>
+
         </div>
 
     </div>
@@ -415,7 +464,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p>&copy; 2026 CHARUSAT University &bull; Student HUB Portal</p>
     </footer>
 
-    <script src="../js/register.js"></script>
+    <script src="../js/register.js?v=2"></script>
 
 </body>
 

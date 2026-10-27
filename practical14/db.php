@@ -21,7 +21,12 @@ try {
 }
 catch (PDOException $e) {
 
-    die("Database connection failed.");
+    error_log("Database connection failed: " . $e->getMessage());
+
+    die(
+        "Database connection failed. Start MySQL in XAMPP and " .
+        "import database/studenthub.sql."
+    );
 
 }
 
